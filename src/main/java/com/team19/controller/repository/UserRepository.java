@@ -1,6 +1,7 @@
 package com.team19.controller.repository;
 
 import com.team19.controller.model.*;
+import com.team19.controller.repository.mapper.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -84,6 +85,16 @@ public class UserRepository {
         }
 
         return users;
+    }
+
+    public User getUserbyUserName(String userName) {
+        String sql = "SELECT Username, Password from User WHERE Username = \"" + userName + "\"";
+        List<User> users = jdbcTemplate.query(sql, new UserRowMapper());
+        if(!users.isEmpty()) {
+            return users.get(0);
+        }
+        return null;
+
     }
 
     public JdbcTemplate getJdbcTemplate() {

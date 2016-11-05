@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 /**
  * Created by akeem on 11/2/16.
  */
-public  abstract class User {
+public class User {
     private String userName;
     private String Name;
     private String password;

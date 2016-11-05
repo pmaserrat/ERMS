@@ -3,10 +3,17 @@
  */
 package com.team19.controller;
 
+import com.team19.controller.model.User;
+import com.team19.controller.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Pmaserrat
@@ -18,17 +25,32 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class WelcomeController {
 
-	@RequestMapping("/welcome")
-	public ModelAndView helloWorld(@RequestParam(value = "username", required = false) String username,
-			@RequestParam(value = "password", required = false) String password) throws Exception {
+	@Autowired
+	UserRepository userRepository;
 
-		ModelAndView model = new ModelAndView();
-		if (username.equals("admin") && password.equals("admin")) {
-			model.addObject("username", username);
+	@RequestMapping(value = "/welcome", method = RequestMethod.POST)
+	public ModelAndView helloWorld(@RequestParam Map<String,String> allRequestParams) throws Exception {
+
+		for (Map.Entry<String, String>entry :allRequestParams.entrySet()) {
+			System.out.println(entry.getKey() + ":" + entry.getValue());
+		}
+		String username = allRequestParams.get("username");
+		String password = allRequestParams.get("password");
+
+		User user = userRepository.getUserbyUserName(username);
+		if(user == null) {
+			throw new Exception("Invalid Username and/or Password.");
+		}
+		if(user.getPassword().equals(password)) {
+			ModelAndView model = new ModelAndView();
+
+			model.addObject("username", user.getUserName());
 			return model;
 		} else {
 			throw new Exception("Invalid Username and/or Password.");
 		}
+
+
 	}
 
 }

@@ -40,7 +40,7 @@
 				Welcome! Please Login!	
 			</div>
 			<div class="col-xs-12 col-sm-5 col-centered loginPanel">
-				<form action="welcome.jsp" method="POST">
+				<form action="welcome" method="POST">
 					<div class="row">
 						<div class="col-xs-11 col-centered">
 							<div class="form-group">
