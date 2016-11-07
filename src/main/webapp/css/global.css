@@ -1,0 +1,31 @@
+body {
+	background-color:#e6e6e6!important;
+}
+
+.col-centered{
+    float: none!important;
+    margin: 0 auto;
+}
+
+.loginPanel{
+	margin-top:100px;
+	padding:30px;
+	background-color: #ffffff;
+	box-shadow
+	-webkit-box-shadow: 6px 5px 6px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 6px 5px 6px 0px rgba(0,0,0,0.75);
+	box-shadow: 6px 5px 6px 0px rgba(0,0,0,0.75);
+	border-radius:5px;
+}
+
+.loginBanner{
+	margin-top: 70px;
+	text-align: center;
+	font-size: 40px;
+}
+
+.welcomeMessage{
+	margin-top: 70px;
+	text-align: center;
+	font-size: 40px;
+}

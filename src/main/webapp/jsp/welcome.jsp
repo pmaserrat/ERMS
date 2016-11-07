@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>Welcome!</title>
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/global.css"/>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
@@ -14,8 +15,10 @@
 	</head>
 	<body>
 		<div class="row">
-			<div class="col-xs-11 col-centered welcomeMessage" style="text-align: center;font-size: 40px;float: none!important;margin: 0 auto;margin-top: 70px;">
+			<div class="col-xs-11 col-centered welcomeMessage">
 				<p>Welcome <b>${username}!</b> Enjoy!</p>
+				<a href="mainMenu.jsp">Main Menu</a>
+				
 				<br><br>
 				<form action="index.jsp">
    					<input type="submit" value="Logout" />
