@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 	<head>
 		<title>Welcome!</title>
@@ -20,7 +22,9 @@
 				<a href="mainMenu.jsp">Main Menu</a>
 				
 				<br><br>
-				<form action="index.jsp">
+				<p><a href="<spring:url value="/resource/" />" >View Resources</a><p>
+				<p><a href="<spring:url value="/incidents/" />" >View Incidents</a><p>
+				<form action="Logout">
    					<input type="submit" value="Logout" />
 				</form>
 			</div>

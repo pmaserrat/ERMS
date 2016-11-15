@@ -3,6 +3,7 @@
  */
 package com.team19.controller;
 
+import com.team19.controller.Service.HttpSessionService;
 import com.team19.controller.model.User;
 import com.team19.controller.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Pmaserrat
@@ -27,6 +30,11 @@ public class WelcomeController {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	HttpServletRequest request;
+
+
 
 	@RequestMapping(value = "/welcome", method = RequestMethod.POST)
 	public ModelAndView helloWorld(@RequestParam Map<String,String> allRequestParams) throws Exception {
@@ -36,7 +44,8 @@ public class WelcomeController {
 		}
 		String username = allRequestParams.get("username");
 		String password = allRequestParams.get("password");
-
+		System.out.println(request);
+		
 		User user = userRepository.getUserbyUserName(username);
 		if(user == null) {
 			throw new Exception("Invalid Username and/or Password.");
@@ -45,12 +54,22 @@ public class WelcomeController {
 			ModelAndView model = new ModelAndView();
 
 			model.addObject("username", user.getUserName());
+			String sessionId = HttpSessionService.getInstance().createSession(user);
+			request.setAttribute("user", sessionId);
+			request.getSession().setAttribute("user", sessionId);
 			return model;
 		} else {
 			throw new Exception("Invalid Username and/or Password.");
 		}
 
 
+	}
+	@RequestMapping(value = "/Logout", method = RequestMethod.GET)
+	public String logout() {
+		String sessionId = (String) request.getSession().getAttribute("user");
+		HttpSessionService.getInstance().destroySession(sessionId);
+		
+		return "redirect:index.jsp";
 	}
 
 }
