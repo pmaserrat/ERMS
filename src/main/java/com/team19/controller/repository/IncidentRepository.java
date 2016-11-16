@@ -13,36 +13,47 @@ import utils.SQLUtils;
 
 @Repository
 public class IncidentRepository {
-	
-	 @Autowired
-	    private JdbcTemplate jdbcTemplate;
-	 	
-	 	public static String INCIDENT = "Incident";
 
-	    public List<Incident> getAllIncidents(String userName) {
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
-	        List<Incident> incidents = new ArrayList<>();
-	        StringBuilder builder = new StringBuilder();
-	        builder.append(SQLUtils.SELECT);
-	        builder.append("*");
-	        builder.append(SQLUtils.FROM);
-	        builder.append(INCIDENT);
-	        builder.append(SQLUtils.WHERE);
-	        builder.append("Username = '%s'");
-	        
-	        String sql = String.format(builder.toString(), userName);
+	public static String INCIDENT = " Incident ";
 
-	        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+	public List<Incident> getAllIncidents(String userName) {
 
-	        for ( Map<String, Object> row: rows) {
-	            Incident incident = new Incident();
-	            incident.setID((Integer) row.get("ID"));
-	            incident.setDescription((String) row.get("Description"));
-	            incidents.add(incident);
-	        }
+		List<Incident> incidents = new ArrayList<>();
+		StringBuilder builder = new StringBuilder();
+		builder.append(SQLUtils.SELECT);
+		builder.append("*");
+		builder.append(SQLUtils.FROM);
+		builder.append(INCIDENT);
+		builder.append(SQLUtils.WHERE);
+		builder.append("Username = '%s'");
 
-	        return incidents;
+		String sql = String.format(builder.toString(), userName);
 
-	    }
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			Incident incident = new Incident();
+			incident.setID((Integer) row.get("ID"));
+			incident.setDescription((String) row.get("Description"));
+			incidents.add(incident);
+		}
+
+		return incidents;
+
+	}
+
+	public void createIncident(Incident incident) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(SQLUtils.INSERT_INTO);
+		builder.append(INCIDENT);
+		builder.append("(Username,Date, Description, Latitude,Longitude)");
+		builder.append(SQLUtils.VALUES + "(?, ?, ?, ?, ?)");
+		String sql = builder.toString();
+		jdbcTemplate.update(sql, new Object[] { incident.getUsername(), incident.getDate(), incident.getDescription(),
+				incident.getDescription(), incident.getLatitude(), incident.getLongitude() });
+	}
 
 }

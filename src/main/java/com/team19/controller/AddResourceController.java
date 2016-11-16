@@ -52,6 +52,6 @@ public class AddResourceController {
     	String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();	
     	System.out.println(userName);
     	  model.addAttribute("username", userName);
-        return "redirect:/addResource/";
+        return "redirect:/resources";
     }
 }

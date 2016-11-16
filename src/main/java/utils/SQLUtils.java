@@ -11,6 +11,8 @@ public class SQLUtils {
 	public static final String UPDATE = " UPDATE ";
 	public static final String INSERT_INTO = " INSERT INTO ";
 	public static final String LIKE = " LIKE ";
+	public static final String VALUES = " VALUES ";
+	public static final String COMMA = ",";
 	
 
 }

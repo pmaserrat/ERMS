@@ -21,7 +21,7 @@ public class ResourceRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     
-    public static String RESOURCE = "Resource";
+    public static String RESOURCE = " Resource ";
     
 
     public List<Resource> getAllResources(String userName) {
@@ -49,6 +49,20 @@ public class ResourceRepository {
         return resources;
 
     }
+    
+	public void createResource(Resource resource) {
+		Integer ID = 0;
+		StringBuilder builder = new StringBuilder();
+		builder.append(SQLUtils.INSERT_INTO);
+		builder.append(RESOURCE);
+		builder.append("(Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit)");
+		builder.append(SQLUtils.VALUES + "(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		String sql = builder.toString();
+		jdbcTemplate.update(sql,
+				new Object[] { resource.getUsername(), resource.getName(), resource.getNextAvailableDate(),
+						resource.getStatus(), resource.getModel(), resource.getLatitude(), resource.getLongitude(),
+						resource.getAmount(), resource.getCostTimeUnit() });
 
+	}
 
 }
