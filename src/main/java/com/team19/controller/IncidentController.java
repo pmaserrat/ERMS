@@ -14,38 +14,38 @@ import com.team19.controller.repository.IncidentRepository;
 @Controller
 @RequestMapping("/incidents")
 public class IncidentController {
-	
+
 	@Autowired
-    IncidentRepository incidentRepository;
-    
-    @Autowired
+	IncidentRepository incidentRepository;
+
+	@Autowired
 	HttpServletRequest request;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String getIncidents (Model model)
-    {
-    	String sessionId = (String) request.getSession().getAttribute("user");
-    	System.out.println(sessionId);
-    	String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
-        System.out.println(userName);
-        model.addAttribute("incidents", incidentRepository.getAllIncidents(userName));
-        model.addAttribute("username", userName);
-        return "incidents";
-    }
-    
-    
-    @RequestMapping(value = "add", method = RequestMethod.GET)
-    public String addIncidents (Model model)
-    {
-    	String sessionId = (String) request.getSession().getAttribute("user");
-    	System.out.println(sessionId);
-    	String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
-        System.out.println(userName);
-       
-        model.addAttribute("username", userName);
-        return "addIncident";
-    }
-	
+	@RequestMapping(method = RequestMethod.GET)
+	public String getIncidents(Model model) {
+		String sessionId = (String) request.getSession().getAttribute("user");
+		System.out.println(sessionId);
+		String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
+		System.out.println(userName);
+		model.addAttribute("incidents", incidentRepository.getAllIncidents(userName));
+		model.addAttribute("username", userName);
+		return "incidents";
+	}
 
+	@RequestMapping(value = "add", method = RequestMethod.GET)
+	public String addIncidents(Model model) {
+		String sessionId = (String) request.getSession().getAttribute("user");
+		System.out.println(sessionId);
+		String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
+		System.out.println(userName);
+
+		model.addAttribute("username", userName);
+		return "addIncident";
+	}
+
+	@RequestMapping(value = "/MainMenu")
+	public String mainMenu() {
+		return "/welcome";
+	}
 
 }

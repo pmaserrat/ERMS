@@ -1,5 +1,7 @@
 package com.team19.controller.repository;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.team19.controller.model.Incident;
+
 import utils.SQLUtils;
 
 @Repository
@@ -37,6 +40,9 @@ public class IncidentRepository {
 		for (Map<String, Object> row : rows) {
 			Incident incident = new Incident();
 			incident.setID((Integer) row.get("ID"));
+			incident.setDate((Timestamp) row.get("Date"));
+			incident.setLatitude((BigDecimal) row.get("Latitude"));
+			incident.setLongitude((BigDecimal) row.get("Longitude"));
 			incident.setDescription((String) row.get("Description"));
 			incidents.add(incident);
 		}

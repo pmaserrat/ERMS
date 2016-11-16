@@ -16,22 +16,30 @@
 		</style>
 	</head>
 	<body>
-	<p>Welcome <b>${username}!</b> Enjoy!</p>
-		<section class="container">
-        		<p><a href="<spring:url value="/incidents//add/" />" > Add Incident for ${username}</a><p>
-        		<div class="row">
-					<p>List of Incidents for <b>${username}!</b> Enjoy!</p>	
+	<jsp:include page="header.jsp"/>
+		<div class="container">
+			<div class="row margin-b10">
+        		<a href="<spring:url value="/incidents//add/" />" > Add Incident for ${username}</a>
+        	</div>
+       		<div class="row">
+				<p>List of Incidents for <b>${username}!</b> Enjoy!</p>	
+				<table class="table">
+				    <tr>
+				        <th>ID</th>
+				        <th>Date</th>
+				        <th>Location</th>
+				        <th>Description</th>
+				    </tr>	
         			<c:forEach items="${incidents}" var="incident">
-        				<div class="" style="padding-bottom: 15px">
-        					<div class="thumbnail">
-        						<div class="caption">
-        							<p>${incidents.id} ${incident.description}<p>
-        						</div>
-        					</div>
-        				</div>
-        			</c:forEach>
-        		</div>
-        	</section>
-
+				        <tr>
+				            <td>${incident.ID}</td>
+				            <td>${incident.date}</td>
+				            <td>(${incident.latitude}, ${incident.longitude})</td>
+				            <td>${incident.description}</td>
+				        </tr>
+					</c:forEach>
+				</table>
+       		</div>
+        </div>	
 	</body>
 </html>

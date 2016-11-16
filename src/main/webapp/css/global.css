@@ -7,6 +7,66 @@ body {
     margin: 0 auto;
 }
 
+.container{
+	padding-top:30px;
+}
+
+.text-center{
+	text-align:center;
+}
+
+.margin-t20{
+	margin-top:20px;
+}
+
+.margin-b10{
+	margin-bottom:10px;
+}
+
+.mainMenuLink{
+	font-size: 15px;
+	margin-top: 10px;
+	position: absolute;
+}
+
+.header{
+	background-color: rgba(12,13,14,0.86);
+	height: 50px;
+	color: #e4e6e8;
+	padding-top:5px;
+	padding-left:5px;
+	font-size:25px;
+}
+
+.container .table>tbody>tr>th{
+	border-top:1px solid #666666;
+}
+
+
+.container table.table{
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+}
+
+.container table.table th{
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+	text-align: center;
+}
+
+.container table.table td {
+	text-align: center;
+	border-width: 1px;
+	padding: 22px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+
 .loginPanel{
 	margin-top:100px;
 	padding:30px;
