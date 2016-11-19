@@ -21,8 +21,6 @@ import com.team19.controller.repository.UserRepository;
 /**
  * @author Pmaserrat
  * 
- *         Add your names
- * 
  * @date Oct 31, 2016
  */
 @Controller
@@ -35,7 +33,7 @@ public class WelcomeController {
 	HttpServletRequest request;
 
 	@RequestMapping(value = "/welcome", method = RequestMethod.POST)
-	public ModelAndView helloWorld(@RequestParam Map<String, String> allRequestParams) throws Exception {
+	public String welcome(@RequestParam Map<String, String> allRequestParams) throws Exception {
 
 		for (Map.Entry<String, String> entry : allRequestParams.entrySet()) {
 			System.out.println(entry.getKey() + ":" + entry.getValue());
@@ -55,14 +53,16 @@ public class WelcomeController {
 			String sessionId = HttpSessionService.getInstance().createSession(user);
 			request.setAttribute("user", sessionId);
 			request.getSession().setAttribute("user", sessionId);
-			return model;
+			request.setAttribute("userName", username);
+			request.getSession().setAttribute("userName", username);
+			return "welcome";
 		} else {
 			throw new Exception("Invalid Username and/or Password.");
 		}
 
 	}
 
-	@RequestMapping(value = "/Logout", method = RequestMethod.GET)
+	@RequestMapping(value = "/Logout", method = RequestMethod.POST)
 	public String logout() {
 		String sessionId = (String) request.getSession().getAttribute("user");
 		HttpSessionService.getInstance().destroySession(sessionId);
@@ -70,9 +70,12 @@ public class WelcomeController {
 		return "redirect:index.jsp";
 	}
 
-	@RequestMapping(value = "/MainMenu")
+	@RequestMapping(value = "/mainMenu", method = RequestMethod.POST)
 	public String mainMenu() {
-		return "/welcome";
+		String userName = (String) request.getSession().getAttribute("userName");
+		ModelAndView model = new ModelAndView();
+		model.addObject("username", userName);
+		return "welcome";
 	}
 
 }

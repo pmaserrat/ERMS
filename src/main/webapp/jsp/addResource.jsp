@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
+
 <head>
 <title>Welcome!</title>
 <!--  <link rel="stylesheet" href="../css/global.css" /> -->
@@ -39,6 +40,7 @@ body {
 </style>
 </head>
 <body>
+<jsp:include page="header.jsp"/>
 	<div>
 		<div class="col-xs-11 col-centered welcomeMessage">
 			<p>
@@ -105,16 +107,15 @@ body {
 
 
 
+
 							<button type="submit" class="btn btn-default pull-right">Submit</button>
 						</div>
 					</div>
 				</form>
 			</div>
-			<form action="index.jsp">
-				<input type="submit" value="Logout" />
-			</form>
-		</div>
-	</div>
 
-</body>
+		</div> 
+	</div>
+	</body>
+
 </html>

@@ -11,6 +11,11 @@ body {
 	padding-top:30px;
 }
 
+.pull-right{
+	text-align: right;
+	padding-right:10px;
+}
+
 .text-center{
 	text-align:center;
 }
@@ -68,7 +73,18 @@ body {
 }
 
 .loginPanel{
-	margin-top:100px;
+	margin-top:80px;
+	padding:30px;
+	background-color: #ffffff;
+	box-shadow
+	-webkit-box-shadow: 6px 5px 6px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 6px 5px 6px 0px rgba(0,0,0,0.75);
+	box-shadow: 6px 5px 6px 0px rgba(0,0,0,0.75);
+	border-radius:5px;
+}
+
+.formPanel{
+	margin-top:40px;
 	padding:30px;
 	background-color: #ffffff;
 	box-shadow

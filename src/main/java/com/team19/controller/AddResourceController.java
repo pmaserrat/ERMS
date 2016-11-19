@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +27,8 @@ import com.team19.controller.repository.ResourceRepository;
 
 /**
  * Created by akeem on 11/9/16.
+ * 
+ * Pmaserrat
  */
 @Controller
 @RequestMapping("/addResource/")
@@ -38,10 +39,12 @@ public class AddResourceController {
 
 	@Autowired
 	ESFRepository esfRepository;
+
 	@Autowired
 	ResourceRepository ressourceRepository;
 	@Autowired
 	CostTimeUnitRepository costimeUnitREpository;
+
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String addResources(Model model) {
@@ -51,12 +54,15 @@ public class AddResourceController {
 		System.out.println(userName);
 		model.addAttribute("username", userName);
 		model.addAttribute("esfs", esfRepository.getAllESFs());
+
 		model.addAttribute("units", costimeUnitREpository.getCostTimeUnits());
+
 		return "addResource";
 	}
 
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	public String addResources(Model model, @RequestParam Map<String, String> allRequestParams) {
+
 
 
 		String sessionId = (String) request.getSession().getAttribute("user");

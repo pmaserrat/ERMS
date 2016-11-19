@@ -1,25 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
-	<head>
-		<title>Welcome!</title>
-		<link rel="stylesheet" href="../css/global.css"/>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/></script>
-
-		<style type="text/css">
-		body {
-			background-color:#e6e6e6;
-		}
-		</style>
-	</head>
 	<body>
 	<jsp:include page="header.jsp"/>
 		<div class="container">
 			<div class="row margin-b10">
-        		<a href="<spring:url value="/incidents//add/" />" > Add Incident for ${username}</a>
+        		<a href="<spring:url value="/addIncident/" />" > Add Incident for ${username}</a>
         	</div>
        		<div class="row">
 				<p>List of Incidents for <b>${username}!</b> Enjoy!</p>	
