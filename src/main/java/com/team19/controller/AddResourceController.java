@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team19.controller.Service.HttpSessionService;
 import com.team19.controller.repository.ESFRepository;
+import com.team19.controller.repository.ResourceRepository;
 
 /**
  * Created by akeem on 11/9/16.
@@ -27,6 +28,8 @@ public class AddResourceController {
 	 
 	 @Autowired
 	    ESFRepository esfRepository;
+	 @Autowired
+	 ResourceRepository ressourceRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     public String addResources (Model model)

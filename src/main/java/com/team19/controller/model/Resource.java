@@ -2,6 +2,7 @@ package com.team19.controller.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by akeem on 11/5/16.
@@ -18,6 +19,8 @@ public class Resource {
     private BigDecimal longitude;
     private double amount;
     private String costTimeUnit;
+    private String PrimaryESF;
+    private List<ESF> additonalESF;
 
     public String getUsername() {
         return username;
@@ -98,4 +101,22 @@ public class Resource {
     public void setCostTimeUnit(String costTimeUnit) {
         this.costTimeUnit = costTimeUnit;
     }
+
+	public String getPrimaryESF() {
+		return PrimaryESF;
+	}
+
+	public void setPrimaryESF(String primaryESF) {
+		PrimaryESF = primaryESF;
+	}
+
+	public List<ESF> getAdditonalESF() {
+		return additonalESF;
+	}
+
+	public void setAdditonalESF(List<ESF> additonalESF) {
+		this.additonalESF = additonalESF;
+	}
+    
+    
 }

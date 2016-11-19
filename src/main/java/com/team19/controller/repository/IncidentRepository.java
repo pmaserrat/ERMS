@@ -1,11 +1,16 @@
 package com.team19.controller.repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.team19.controller.model.Incident;
@@ -45,15 +50,18 @@ public class IncidentRepository {
 
 	}
 
-	public void createIncident(Incident incident) {
+	public Integer createIncident(Incident incident) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(SQLUtils.INSERT_INTO);
 		builder.append(INCIDENT);
 		builder.append("(Username,Date, Description, Latitude,Longitude)");
 		builder.append(SQLUtils.VALUES + "(?, ?, ?, ?, ?)");
 		String sql = builder.toString();
+		
+		GeneratedKeyHolder holder = new GeneratedKeyHolder();
 		jdbcTemplate.update(sql, new Object[] { incident.getUsername(), incident.getDate(), incident.getDescription(),
-				incident.getDescription(), incident.getLatitude(), incident.getLongitude() });
+				incident.getDescription(), incident.getLatitude(), incident.getLongitude() }, holder);
+		return holder.getKey().intValue();
 	}
 
 }
