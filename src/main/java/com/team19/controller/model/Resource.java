@@ -21,6 +21,7 @@ public class Resource {
     private String costTimeUnit;
     private String PrimaryESF;
     private List<ESF> additonalESF;
+    private List<String> capabilities;
 
     public String getUsername() {
         return username;
@@ -117,6 +118,24 @@ public class Resource {
 	public void setAdditonalESF(List<ESF> additonalESF) {
 		this.additonalESF = additonalESF;
 	}
+
+	public List<String> getCapabilities() {
+		return capabilities;
+	}
+
+	public void setCapabilities(List<String> capabilities) {
+		this.capabilities = capabilities;
+	}
+
+	@Override
+	public String toString() {
+		return "Resource [username=" + username + ", ID=" + ID + ", name=" + name + ", nextAvailableDate="
+				+ nextAvailableDate + ", status=" + status + ", model=" + model + ", latitude=" + latitude
+				+ ", longitude=" + longitude + ", amount=" + amount + ", costTimeUnit=" + costTimeUnit + ", PrimaryESF="
+				+ PrimaryESF + ", additonalESF=" + additonalESF + ", capabilities=" + capabilities + "]";
+	}
+	
+	
     
     
 }

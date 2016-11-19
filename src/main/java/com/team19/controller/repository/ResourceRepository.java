@@ -1,6 +1,9 @@
 package com.team19.controller.repository;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +11,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.mysql.jdbc.Statement;
+import com.team19.controller.model.ESF;
 import com.team19.controller.model.Resource;
 
 import utils.SQLUtils;
@@ -60,8 +67,8 @@ public class ResourceRepository {
 
 	}
 
-
-	public Integer createResource(Resource resource) {
+	@Transactional
+	public Integer createResource(final Resource resource) {
 
 		Integer ID = 0;
 		StringBuilder builder = new StringBuilder();
@@ -69,14 +76,63 @@ public class ResourceRepository {
 		builder.append(RESOURCE);
 		builder.append("(Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit)");
 		builder.append(SQLUtils.VALUES + "(?, ?, ?, ?, ?, ?, ?, ?, ?)");
-		String sql = builder.toString();
+		final String sql = builder.toString();
+		System.out.println(sql);
 		GeneratedKeyHolder holder = new GeneratedKeyHolder();
-		jdbcTemplate.update(sql,
-				new Object[] { resource.getUsername(), resource.getName(), resource.getNextAvailableDate(),
-						resource.getStatus(), resource.getModel(), resource.getLatitude(), resource.getLongitude(),
-						resource.getAmount(), resource.getCostTimeUnit() }, holder);
+		
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection arg0) throws SQLException {
+				PreparedStatement ps = arg0.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, resource.getUsername());
+				ps.setString(2, resource.getName());
+				ps.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+				ps.setString(4, "Ready");
+				ps.setString(5,  resource.getModel());
+				ps.setBigDecimal(6, resource.getLatitude());
+				ps.setBigDecimal(7, resource.getLongitude());
+				ps.setDouble(8, resource.getAmount());
+				ps.setString(9, resource.getCostTimeUnit());
+				return ps;
+			}
+		}, holder );
+		
+		Integer id = holder.getKey().intValue();
+		//Insert capabilites
+		StringBuilder capabilitySQL = new StringBuilder();
+		capabilitySQL.append(SQLUtils.INSERT_INTO);
+		capabilitySQL.append("Capabilities");
+		capabilitySQL.append("(ID, Capabilities)");
+		capabilitySQL.append(SQLUtils.VALUES + "(?, ?)");
+		 String sql2 = capabilitySQL.toString();
+		for (String capability : resource.getCapabilities()) {
 
-	return holder.getKey().intValue();
+			jdbcTemplate.update(sql2, new Object[] { id, capability });
+		}
+		//insert Primary ESF
+		StringBuilder primaryESFSQL = new StringBuilder();
+		primaryESFSQL.append(SQLUtils.INSERT_INTO);
+		primaryESFSQL.append("Primary_ESF");
+		primaryESFSQL.append("(	Number, 	ResourceId)");
+		primaryESFSQL.append(SQLUtils.VALUES + "(?, ?)");
+		final String sql3 = primaryESFSQL.toString();
+		
+		jdbcTemplate.update(sql3, new Object[] { Integer.parseInt(resource.getPrimaryESF()), id });
+		
+		//insert Additional esf
+		for (ESF esf : resource.getAdditonalESF()) {
+			StringBuilder addtionalESFSQL= new StringBuilder();
+			addtionalESFSQL.append(SQLUtils.INSERT_INTO);
+			addtionalESFSQL.append("Additional_ESF");
+			addtionalESFSQL.append("(	Number, 	ResourceId)");
+			addtionalESFSQL.append(SQLUtils.VALUES + "(?, ?)");
+			String sql4 = addtionalESFSQL.toString();
+			jdbcTemplate.update(sql4, new Object[] { esf.getNumber(), id });
+		}
+
+		return id;
+
 	}
-	
+
 }
