@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.team19.controller.Service.HttpSessionService;
 import com.team19.controller.repository.IncidentRepository;
 
+/**
+ * Created by akeem on 11/9/16.
+ * 
+ * Pmaserrat
+ */
 @Controller
-@RequestMapping("/incidents")
+@RequestMapping("/incidents/")
 public class IncidentController {
 
 	@Autowired
@@ -32,7 +37,7 @@ public class IncidentController {
 		return "incidents";
 	}
 
-	@RequestMapping(value = "add", method = RequestMethod.GET)
+	@RequestMapping(value = "addIncident", method = RequestMethod.GET)
 	public String addIncidents(Model model) {
 		String sessionId = (String) request.getSession().getAttribute("user");
 		System.out.println(sessionId);
@@ -41,11 +46,6 @@ public class IncidentController {
 
 		model.addAttribute("username", userName);
 		return "addIncident";
-	}
-
-	@RequestMapping(value = "/MainMenu")
-	public String mainMenu() {
-		return "/welcome";
 	}
 
 }

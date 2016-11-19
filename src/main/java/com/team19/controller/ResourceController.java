@@ -14,6 +14,8 @@ import com.team19.controller.repository.ResourceRepository;
 
 /**
  * Created by akeem on 11/9/16.
+ * 
+ * Pmaserrat
  */
 @Controller
 @RequestMapping("/resource")
@@ -38,11 +40,6 @@ public class ResourceController {
 		model.addAttribute("esfs", esfRepository.getAllESFs());
 		model.addAttribute("username", userName);
 		return "resources";
-	}
-
-	@RequestMapping(value = "/MainMenu")
-	public String mainMenu() {
-		return "/welcome";
 	}
 
 }
