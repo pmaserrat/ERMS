@@ -40,7 +40,7 @@ body {
 </style>
 </head>
 <body>
-<jsp:include page="header.jsp"/>
+<!--<jsp:include page="header.jsp"/> -->
 	<div>
 		<div class="col-xs-11 col-centered welcomeMessage">
 			<p>
