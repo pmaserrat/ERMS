@@ -16,7 +16,7 @@
 	<body>
 		<div class="row">
 			<div class="col-xs-11 col-centered welcomeMessage">
-				<p>Welcome <b>${username}!</b> Enjoy!</p>
+				<p>Welcome <b>${username}!</b></p>
 				<br><br>
 				<form action="index.jsp">
    					<input type="submit" value="Logout" />

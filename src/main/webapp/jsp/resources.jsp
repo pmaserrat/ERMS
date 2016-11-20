@@ -3,12 +3,29 @@
 <html>
 	<body>
 	<jsp:include page="header.jsp"/>
+		<div class="row header">
+			<div class="col-xs-12">
+				<div class="col-xs-2">
+		 			<form action="../mainMenu" method="POST">
+		   				<a href="#" onclick="$(this).closest('form').submit()">Back to Main Menu</a>
+					</form>
+				</div>
+				<div class="col-xs-8 text-center">
+					Emergency Resource Management System
+				</div>
+				<div class="col-xs-2 pull-right">
+					<form action="../Logout" method="POST">
+		   				<a href="#" onclick="$(this).closest('form').submit()">Logout</a>
+					</form>
+				</div>
+			</div>
+		</div>
 		<div class="container">
-			<div class="row margin-b10">
-        		<a href="<spring:url value="/addResource/" />" >Add Resources for ${username}</a>
-        	</div>
        		<div class="row">
-				<p>List of Resources for <b>${username}!</b> Enjoy!</p>	
+       			<div class="col-xs-12 col-centered welcomeMessage">
+				<p class="font30 text-center">Resources for <b>${username}!</b></p>
+			</div>
+				<br><br>	
 				<table class="table">
 				    <tr>
 				        <th>ID</th>
@@ -32,6 +49,9 @@
 					</c:forEach>
 				</table>
        		</div>
+       		<div class="row margin-b10">
+        		<a class="font20" href="<spring:url value="/addResource/" />" >Add new Resources for ${username}</a>
+        	</div>
         </div>
 	</body>
 </html>
