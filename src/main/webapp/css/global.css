@@ -94,6 +94,10 @@ body {
 	border-radius:5px;
 }
 
+.formPanel div{
+	height: auto;
+}
+
 .loginBanner{
 	margin-top: 70px;
 	text-align: center;
