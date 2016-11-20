@@ -52,7 +52,7 @@ public class IncidentRepository {
 
 	}
 
-	public Integer createIncident(Incident incident) {
+	public void createIncident(Incident incident) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(SQLUtils.INSERT_INTO);
 		builder.append(INCIDENT);
@@ -60,10 +60,9 @@ public class IncidentRepository {
 		builder.append(SQLUtils.VALUES + "(?, ?, ?, ?, ?)");
 		String sql = builder.toString();
 		
-		GeneratedKeyHolder holder = new GeneratedKeyHolder();
-		jdbcTemplate.update(sql, new Object[] { incident.getUsername(), incident.getDate(), incident.getDescription(),
-				incident.getDescription(), incident.getLatitude(), incident.getLongitude() }, holder);
-		return holder.getKey().intValue();
+		
+		jdbcTemplate.update(sql, new Object[] { incident.getUsername(), incident.getDate(), incident.getDescription(), incident.getLatitude(), incident.getLongitude() });
+		
 	}
 
 }

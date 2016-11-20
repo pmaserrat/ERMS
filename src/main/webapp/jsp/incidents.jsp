@@ -5,7 +5,7 @@
 	<jsp:include page="header.jsp"/>
 		<div class="container">
 			<div class="row margin-b10">
-        		<a href="<spring:url value="/addIncident/" />" > Add Incident for ${username}</a>
+        		<a href="<spring:url value="addIncident" />" > Add Incident for ${username}</a>
         	</div>
        		<div class="row">
 				<p>List of Incidents for <b>${username}!</b> Enjoy!</p>	

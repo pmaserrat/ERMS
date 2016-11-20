@@ -60,4 +60,11 @@ public class Incident {
 		this.longitude = longitude;
 	}
 
+	@Override
+	public String toString() {
+		return "Incident [username=" + username + ", ID=" + ID + ", description=" + description + ", date=" + date
+				+ ", latitude=" + latitude + ", longitude=" + longitude + "]";
+	}
+
+	
 }

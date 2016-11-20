@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.mysql.fabric.xmlrpc.base.Array;
 import com.team19.controller.Service.HttpSessionService;
 import com.team19.controller.model.ESF;
 import com.team19.controller.model.Resource;
@@ -96,8 +95,8 @@ public class AddResourceController {
 		resource.setUsername(userName);
 		resource.setAmount(Double.parseDouble(allRequestParams.get("cost")));
 		resource.setModel(allRequestParams.get("model"));
-		resource.setLatitude((BigDecimal) format.parse(allRequestParams.get("Lat")));
-		resource.setLongitude((BigDecimal) format.parse(allRequestParams.get("Long")));
+		resource.setLatitude(new BigDecimal(allRequestParams.get("Lat")));
+		resource.setLongitude(new BigDecimal(allRequestParams.get("Long")));
 		resource.setCostTimeUnit(allRequestParams.get("Unit"));
 		resource.setPrimaryESF(allRequestParams.get("PrimaryESF"));
 
