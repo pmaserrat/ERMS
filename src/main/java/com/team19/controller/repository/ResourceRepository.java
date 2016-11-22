@@ -33,6 +33,38 @@ public class ResourceRepository {
 
 	public static String RESOURCE = " Resource ";
 
+	public List<Resource> getAllResources() {
+
+		List<Resource> resources = new ArrayList<>();
+		StringBuilder builder = new StringBuilder();
+		builder.append(SQLUtils.SELECT);
+		builder.append("*");
+		builder.append(SQLUtils.FROM);
+		builder.append(RESOURCE);
+
+		String sql = builder.toString();
+		
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			Resource resource = new Resource();
+			resource.setID((Integer) row.get("ID"));
+			resource.setName((String) row.get("name"));
+			resource.setStatus((String) row.get("status"));
+			resource.setLongitude((BigDecimal) row.get("longitude"));
+			resource.setLatitude((BigDecimal) row.get("latitude"));
+			BigDecimal amt = (BigDecimal) row.get("amount");
+			resource.setAmount(amt.doubleValue());
+			resource.setCostTimeUnit((String) row.get("costTimeUnit"));
+			resource.setModel((String) row.get("model"));
+			resource.setNextAvailableDate((Timestamp) row.get("nextAvailableDate"));
+			resources.add(resource);
+		}
+
+		return resources;
+
+	}
+	
 	public List<Resource> getAllResources(String userName) {
 
 		List<Resource> resources = new ArrayList<>();
@@ -66,7 +98,7 @@ public class ResourceRepository {
 		return resources;
 
 	}
-
+	
 	@Transactional
 	public Integer createResource(final Resource resource) {
 

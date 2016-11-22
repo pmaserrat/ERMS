@@ -23,6 +23,33 @@ public class IncidentRepository {
 
 	public static String INCIDENT = " Incident ";
 
+	public List<Incident> getAllIncidents() {
+
+		List<Incident> incidents = new ArrayList<>();
+		StringBuilder builder = new StringBuilder();
+		builder.append(SQLUtils.SELECT);
+		builder.append("*");
+		builder.append(SQLUtils.FROM);
+		builder.append(INCIDENT);
+
+		String sql = builder.toString();
+
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			Incident incident = new Incident();
+			incident.setID((Integer) row.get("ID"));
+			incident.setDate((Timestamp) row.get("Date"));
+			incident.setLatitude((BigDecimal) row.get("Latitude"));
+			incident.setLongitude((BigDecimal) row.get("Longitude"));
+			incident.setDescription((String) row.get("Description"));
+			incidents.add(incident);
+		}
+
+		return incidents;
+
+	}
+	
 	public List<Incident> getAllIncidents(String userName) {
 
 		List<Incident> incidents = new ArrayList<>();
