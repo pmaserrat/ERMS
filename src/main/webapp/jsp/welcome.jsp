@@ -22,6 +22,7 @@
 				<p>Welcome <b>${username}!</b> Enjoy!</p>
 				<br><br>
 				<p><a href="<spring:url value="/resource/" />" >View Resources</a><p>
+				<p><a href="<spring:url value="/resource/manage" />" >Manage Resources</a><p>
 				<p><a href="<spring:url value="/incidents/" />" >View Incidents</a><p>
 			</div>
 		</div> 

@@ -15,6 +15,7 @@
 				        <th>Date</th>
 				        <th>Location</th>
 				        <th>Description</th>
+				        <th>Action</th>
 				    </tr>	
         			<c:forEach items="${incidents}" var="incident">
 				        <tr>
@@ -22,6 +23,19 @@
 				            <td>${incident.date}</td>
 				            <td>(${incident.latitude}, ${incident.longitude})</td>
 				            <td>${incident.description}</td>
+				             <td> 
+				             <form class="form-group" action="repair" method="POST">
+				             <div class="form-control row">
+				              <input type="hidden" id="incident" name="incident" value="${incident.ID}">
+								 <select name="ResourceID" id="ResourceID" multiple>
+									<c:forEach items="${resources}" var="resource">
+										<option value="${resource.ID}">${resource.name}</option>
+									</c:forEach>
+								</select>
+								<button type="submit" class="btn btn-default pull-right">Send Resource</button>
+								</div>
+				             </form>
+				             </td>
 				        </tr>
 					</c:forEach>
 				</table>

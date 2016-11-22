@@ -18,6 +18,7 @@
 				        <th>Next Available Date</th>
 				        <th>Amount</th>
 				        <th>Model</th>
+				        <th>Action</th>
 				    </tr>	
         			<c:forEach items="${resources}" var="resource">
 				        <tr>
@@ -28,6 +29,14 @@
 				            <td>${resource.nextAvailableDate}</td>
 				            <td>${resource.amount} / ${resource.costTimeUnit}</td>
 				            <td>${resource.model}</td>
+				            <td> 
+				             <form class="form-group" action="repair" method="POST">
+				             <div class="form-control row">
+				              <input type="hidden" id="resource" name="resource" value="${resource.ID}">
+								<button type="submit" class="btn btn-default pull-right">Send for Repair</button>
+								</div>
+				             </form>
+				             </td>
 				        </tr>
 					</c:forEach>
 				</table>

@@ -66,6 +66,44 @@ public class ResourceRepository {
 		return resources;
 
 	}
+	
+	public List<Resource> getDeployedlResources(String userName) {
+		List<Resource> resources = this.getAllResources(userName);
+		List<Resource> deployedResources = new ArrayList<>();
+		for (Resource resource : resources) {
+			if (resource.getStatus().equals(Resource.DEPLOYED)) {
+				deployedResources.add(resource);
+			}
+		}
+
+		return deployedResources;
+	}
+	
+	public List<Resource> getInRepairlResources(String userName) {
+		List<Resource> resources = this.getAllResources(userName);
+		List<Resource> inRepairResources = new ArrayList<>();
+		for (Resource resource : resources) {
+			if (resource.getStatus().equals(Resource.IN_REPAIR)) {
+				inRepairResources.add(resource);
+			}
+		}
+
+		return inRepairResources;
+	}
+	
+	
+	public List<Resource> getAvailableResources(String userName) {
+		List<Resource> resources = this.getAllResources(userName);
+		List<Resource> avaialable = new ArrayList<>();
+		for (Resource resource : resources) {
+			if (resource.getStatus().equals(Resource.READY)) {
+				avaialable.add(resource);
+			}
+		}
+
+		return avaialable;
+	}
+	
 
 	@Transactional
 	public Integer createResource(final Resource resource) {
@@ -88,7 +126,7 @@ public class ResourceRepository {
 				ps.setString(1, resource.getUsername());
 				ps.setString(2, resource.getName());
 				ps.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
-				ps.setString(4, "Ready");
+				ps.setString(4, Resource.READY);
 				ps.setString(5,  resource.getModel());
 				ps.setBigDecimal(6, resource.getLatitude());
 				ps.setBigDecimal(7, resource.getLongitude());

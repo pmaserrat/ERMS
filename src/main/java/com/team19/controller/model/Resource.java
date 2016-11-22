@@ -22,6 +22,11 @@ public class Resource {
     private String PrimaryESF;
     private List<ESF> additonalESF;
     private List<String> capabilities;
+    
+    public final static String READY =  "Ready";
+    public final static String DEPLOYED = "Deployed";
+    public final static String IN_REPAIR = "In Repair";
+   
 
     public String getUsername() {
         return username;

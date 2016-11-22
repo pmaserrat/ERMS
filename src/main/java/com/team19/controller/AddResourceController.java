@@ -84,7 +84,7 @@ public class AddResourceController {
 		}
 		System.out.println(userName);
 		model.addAttribute("username", userName);
-		return "redirect:/resource";
+		return "redirect:/resource/";
 	}
 
 	private Resource createResource(Map<String, String> allRequestParams, String userName) throws ParseException {
