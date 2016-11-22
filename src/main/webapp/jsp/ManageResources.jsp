@@ -5,60 +5,8 @@
 	<jsp:include page="header.jsp" />
 	<div class="container">
 		<div class="row margin-b10">
-			<a href="<spring:url value="/addResource/" />">Add Resources for
-				${username}</a>
 		</div>
 		<div class="row">
-			<p>Resources In use</p>
-			<table class="table">
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Location</th>
-					<th>Status</th>
-					<th>Next Available Date</th>
-					<th>Amount</th>
-					<th>Model</th>
-					
-				</tr>
-				<c:forEach items="${deployedResources}" var="deployed">
-						<tr>
-							<td>${deployed.ID}</td>
-							<td>${deployed.name}</td>
-							<td>(${deployed.latitude}, ${deployed.longitude})</td>
-							<td>${deployed.status}</td>
-							<td>${deployed.nextAvailableDate}</td>
-							<td>${deployed.amount}/ ${deployed.costTimeUnit}</td>
-							<td>${deployed.model}</td>
-						</tr>
-
-				</c:forEach>
-			</table>
-
-			<p>Resources In Repair</p>
-			<table class="table">
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Location</th>
-					<th>Status</th>
-					<th>Next Available Date</th>
-					<th>Amount</th>
-					<th>Model</th>
-				</tr>
-				<c:forEach items="${inRepairs}" var="inRepair">
-						<tr>
-							<td>${inRepair.ID}</td>
-							<td>${inRepair.name}</td>
-							<td>(${inRepair.latitude}, ${inRepair.longitude})</td>
-							<td>${inRepair.status}</td>
-							<td>${inRepair.nextAvailableDate}</td>
-							<td>${inRepair.amount}/ ${inRepair.costTimeUnit}</td>
-							<td>${inRepair.model}</td>
-						</tr>
-				</c:forEach>
-			</table>
-
 			<p>Requests submitted by me</p>
 			<table class="table">
 				<tr>

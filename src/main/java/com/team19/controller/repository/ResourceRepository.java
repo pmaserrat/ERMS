@@ -17,6 +17,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysql.jdbc.Statement;
+import com.team19.controller.model.Deployed;
+import com.team19.controller.model.DeployedResource;
 import com.team19.controller.model.ESF;
 import com.team19.controller.model.Resource;
 
@@ -67,41 +69,111 @@ public class ResourceRepository {
 
 	}
 	
-	public List<Resource> getDeployedlResources(String userName) {
-		List<Resource> resources = this.getAllResources(userName);
-		List<Resource> deployedResources = new ArrayList<>();
-		for (Resource resource : resources) {
-			if (resource.getStatus().equals(Resource.DEPLOYED)) {
-				deployedResources.add(resource);
-			}
+	public List<DeployedResource> getDeployedlResources(String userName) {
+		List<DeployedResource> resources = new ArrayList<>();
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append(SQLUtils.SELECT);
+		builder.append("D.ResourceID as ResourceID, R.Username,name,NextAvailableDate,Status,Model,R.Latitude as R_Latittude,R.Longitude as R_longitude ,Amount,CostTimeUnit, D.IncidentID AS IncidentID, I.Description AS I_Description");
+		builder.append(SQLUtils.FROM);
+		builder.append(RESOURCE + "AS R");
+		builder.append(SQLUtils.INNER_JOIN + "Deployed AS D");
+		builder.append(SQLUtils.ON + "R.ID = D.ResourceID");
+		builder.append(SQLUtils.INNER_JOIN + "Incident AS I");
+		builder.append(SQLUtils.ON + "I.ID = D.IncidentID");
+		builder.append(SQLUtils.WHERE);
+		builder.append("R.Username = '%s'");
+		String sql = String.format(builder.toString(), userName);
+
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			DeployedResource resource = new DeployedResource();
+			resource.setResourceID((Integer) row.get("ResourceID"));
+			resource.setIncidentID((Integer) row.get("IncidentID"));
+			resource.setName((String) row.get("name"));
+			resource.setDescription((String) row.get("I_Description"));
+			resource.setStatus((String) row.get("status"));
+			resource.setLongitude((BigDecimal) row.get("Longitude"));
+			resource.setLatitude((BigDecimal) row.get("R_Latittude"));
+			BigDecimal amt = (BigDecimal) row.get("amount");
+			resource.setAmount(amt.doubleValue());
+			resource.setCostTimeUnit((String) row.get("costTimeUnit"));
+			resource.setModel((String) row.get("model"));
+			resource.setNextAvailableDate((Timestamp) row.get("nextAvailableDate"));
+			resources.add(resource);
 		}
 
-		return deployedResources;
+		return resources;
 	}
 	
 	public List<Resource> getInRepairlResources(String userName) {
-		List<Resource> resources = this.getAllResources(userName);
-		List<Resource> inRepairResources = new ArrayList<>();
-		for (Resource resource : resources) {
-			if (resource.getStatus().equals(Resource.IN_REPAIR)) {
-				inRepairResources.add(resource);
-			}
-		}
+		List<Resource> resources  = new ArrayList<>();
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append(SQLUtils.SELECT);
+		builder.append("ID, R.Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit");
+		builder.append(SQLUtils.FROM);
+		builder.append(RESOURCE + "AS R");
+		builder.append(SQLUtils.INNER_JOIN + "Schedules_Repair AS S");
+		builder.append(SQLUtils.ON + "R.ID = S.ResourceID");
+		builder.append(SQLUtils.WHERE);
+		builder.append("R.Username = '%s';");
+		String sql = String.format(builder.toString(), userName);
+		System.out.println(sql);
+	
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
-		return inRepairResources;
+		for (Map<String, Object> row : rows) {
+			Resource resource = new Resource();
+			resource.setID((Integer) row.get("ID"));
+			resource.setName((String) row.get("name"));
+			resource.setStatus((String) row.get("status"));
+			resource.setLongitude((BigDecimal) row.get("longitude"));
+			resource.setLatitude((BigDecimal) row.get("latitude"));
+			BigDecimal amt = (BigDecimal) row.get("amount");
+			resource.setAmount(amt.doubleValue());
+			resource.setCostTimeUnit((String) row.get("costTimeUnit"));
+			resource.setModel((String) row.get("model"));
+			resource.setNextAvailableDate((Timestamp) row.get("nextAvailableDate"));
+			resources.add(resource);
+		}
+		System.out.println(resources.size());
+		return resources;
 	}
 	
 	
 	public List<Resource> getAvailableResources(String userName) {
-		List<Resource> resources = this.getAllResources(userName);
-		List<Resource> avaialable = new ArrayList<>();
-		for (Resource resource : resources) {
-			if (resource.getStatus().equals(Resource.READY)) {
-				avaialable.add(resource);
-			}
+		List<Resource> resources = new ArrayList<>();
+		StringBuilder builder = new StringBuilder();
+		builder.append(SQLUtils.SELECT);
+		builder.append("ID, Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit");
+		builder.append(SQLUtils.FROM);
+		builder.append(RESOURCE + "AS R");
+		builder.append(SQLUtils.WHERE);
+		builder.append("R.ID NOT IN (SELECT ResourceID FROM `Deployed` UNION SELECT ResourceID FROM  `Schedules_Repair` )");
+		builder.append(SQLUtils.AND);
+		builder.append("Username = '%s';");
+		
+		String sql = String.format(builder.toString(), userName);
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			Resource resource = new Resource();
+			resource.setID((Integer) row.get("ID"));
+			resource.setName((String) row.get("name"));
+			resource.setStatus((String) row.get("status"));
+			resource.setLongitude((BigDecimal) row.get("longitude"));
+			resource.setLatitude((BigDecimal) row.get("latitude"));
+			BigDecimal amt = (BigDecimal) row.get("amount");
+			resource.setAmount(amt.doubleValue());
+			resource.setCostTimeUnit((String) row.get("costTimeUnit"));
+			resource.setModel((String) row.get("model"));
+			resource.setNextAvailableDate((Timestamp) row.get("nextAvailableDate"));
+			resources.add(resource);
 		}
 
-		return avaialable;
+		return resources;
 	}
 	
 

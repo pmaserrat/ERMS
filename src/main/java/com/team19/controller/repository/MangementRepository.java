@@ -58,6 +58,62 @@ public class MangementRepository {
 		}
 	
 	@Transactional
+	public void cancelDeploy(final Integer resourceId, final Integer incident) {
+
+		
+			StringBuilder builder = new StringBuilder();
+			builder.append(SQLUtils.DELETE);
+			builder.append(SQLUtils.FROM);
+			builder.append(DEPLOYED);
+			builder.append(SQLUtils.WHERE);
+			builder.append("ResourceID = '%s'");
+			builder.append(SQLUtils.AND);
+			builder.append("IncidentID = '%s'");
+			
+			String sql = String.format(builder.toString(), resourceId, incident);
+		
+			jdbcTemplate.update(sql);
+			
+			StringBuilder updateResource = new StringBuilder();
+			updateResource.append(SQLUtils.UPDATE);
+			updateResource.append(ResourceRepository.RESOURCE);
+			updateResource.append(SQLUtils.SET);
+			updateResource.append("Status = '%s'");
+			updateResource.append(SQLUtils.WHERE);
+			updateResource.append("ID = " + resourceId);
+			sql = String.format(updateResource.toString(), Resource.READY);
+			jdbcTemplate.update(sql);
+			
+		}
+	
+	@Transactional
+	public void cancelRepair(final Integer resourceId) {
+
+		
+			StringBuilder builder = new StringBuilder();
+			builder.append(SQLUtils.DELETE);
+			builder.append(SQLUtils.FROM);
+			builder.append(SCHENDULES_REPAIR);
+			builder.append(SQLUtils.WHERE);
+			builder.append("ResourceID = '%s'");
+			
+			String sql = String.format(builder.toString(), resourceId);
+		
+			jdbcTemplate.update(sql);
+			
+			StringBuilder updateResource = new StringBuilder();
+			updateResource.append(SQLUtils.UPDATE);
+			updateResource.append(ResourceRepository.RESOURCE);
+			updateResource.append(SQLUtils.SET);
+			updateResource.append("Status = '%s'");
+			updateResource.append(SQLUtils.WHERE);
+			updateResource.append("ID = " + resourceId);
+			sql = String.format(updateResource.toString(), Resource.READY);
+			jdbcTemplate.update(sql);
+			
+		}
+	
+	@Transactional
 	public void repair(final Schedules_Repair repair) {
 
 		

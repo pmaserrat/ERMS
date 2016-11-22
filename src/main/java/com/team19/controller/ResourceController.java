@@ -51,7 +51,9 @@ public class ResourceController {
 		System.out.println(sessionId);
 		String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
 		System.out.println(userName);
-		model.addAttribute("resources", resourceRepository.getAllResources(userName));
+		model.addAttribute("resources", resourceRepository.getAvailableResources(userName));
+		model.addAttribute("inRepairs", resourceRepository.getInRepairlResources(userName));
+		model.addAttribute("deployedResources", resourceRepository.getDeployedlResources(userName));
 		model.addAttribute("esfs", esfRepository.getAllESFs());
 		model.addAttribute("username", userName);
 		return "resources";
@@ -63,9 +65,6 @@ public class ResourceController {
 		String sessionId = (String) request.getSession().getAttribute("user");
 		System.out.println(sessionId);
 		String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
-		
-		model.addAttribute("deployedResources", resourceRepository.getDeployedlResources(userName));
-		model.addAttribute("inRepairs", resourceRepository.getInRepairlResources(userName));
 		model.addAttribute("requests", requestRepository.getAllRequests(userName));
 		System.out.println("returning to view");
 		return "ManageResources";
@@ -86,6 +85,39 @@ public class ResourceController {
 		repair.setDaysInRepair(10);
 		repair.setRepairStartDate(new Timestamp(System.currentTimeMillis()));
 		mangementRepository.repair(repair);
+
+		System.out.println("returning to view");
+		return "redirect:/resource/";
+		
+	}
+	
+	@RequestMapping(value= "/return", method = RequestMethod.POST)
+	public String cancel(Model model, @RequestParam Map<String, String> allRequestParams) {
+		
+		for (Map.Entry<String, String> entry : allRequestParams.entrySet()) {
+			System.out.println(entry.getKey() + ":" + entry.getValue());
+		}
+		String sessionId = (String) request.getSession().getAttribute("user");
+		System.out.println(sessionId);
+		String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
+		
+		Integer resourceId = -1;
+		Integer incident = -1;
+		String id = allRequestParams.get("resource");
+		if(id != null && !"".equals(id)) {
+			resourceId = Integer.parseInt(id);
+		}
+		id = allRequestParams.get("incident");
+		if(id != null && !"".equals(id)) {
+			incident = Integer.parseInt(id);
+		}
+		if(resourceId != -1 && incident != -1) {
+			mangementRepository.cancelDeploy(resourceId, incident);
+		} else if (resourceId != -1 && incident == -1) {
+			mangementRepository.cancelRepair(resourceId);
+		}
+		
+
 
 		System.out.println("returning to view");
 		return "redirect:/resource/";
