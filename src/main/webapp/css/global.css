@@ -1,5 +1,19 @@
 body {
-	background-color:#e6e6e6!important;
+	background-image: url("../images/background1.jpeg");
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.font30{
+	font-size:30px;
+}
+
+.font20{
+	font-size:20px;
+}
+
+body .padding10{
+	padding:50px;
 }
 
 .col-centered{
@@ -92,6 +106,14 @@ body {
 	-moz-box-shadow: 6px 5px 6px 0px rgba(0,0,0,0.75);
 	box-shadow: 6px 5px 6px 0px rgba(0,0,0,0.75);
 	border-radius:5px;
+}
+
+.formPanel .submitDiv{
+	height:1px;
+}
+
+.formPanel div{
+	height: auto;
 }
 
 .loginBanner{

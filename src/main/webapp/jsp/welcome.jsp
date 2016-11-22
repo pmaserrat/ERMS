@@ -17,15 +17,42 @@
 		</style>
 	</head>
 	<body>
-		<div class="row">
-			<div class="col-xs-11 col-centered welcomeMessage">
-				<p>Welcome <b>${username}!</b> Enjoy!</p>
-				<br><br>
-				<p><a href="<spring:url value="/resource/" />" >View Resources</a><p>
-				<p><a href="<spring:url value="/resource/manage" />" >Manage Resources</a><p>
-				<p><a href="<spring:url value="/incidents/" />" >View Incidents</a><p>
+		<div class="row header">
+			<div class="col-xs-12">
+				<div class="col-xs-2">
+		 			<form action="mainMenu" method="POST">
+		   				<a href="#" onclick="$(this).closest('form').submit()">Back to Main Menu</a>
+					</form>
+				</div>
+				<div class="col-xs-8 text-center">
+					Emergency Resource Management System
+				</div>
+				<div class="col-xs-2 pull-right">
+					<form action="Logout" method="POST">
+		   				<a href="#" onclick="$(this).closest('form').submit()">Logout</a>
+					</form>
+				</div>
 			</div>
-		</div> 
-	
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-centered welcomeMessage">
+				<p>Welcome <b>${userName}!</b></p>
+			</div>
+			<div class="row">
+				<div class="col-xs-4 formPanel col-centered">
+					<p class="font30 text-center"><b>Main Menu</b></p>
+					<hr>
+					<div class="form-group ">
+						<p class="font20 text-center"><a href="<spring:url value="/resource/" />" >View and Add Resources</a></p>
+					</div>
+					<div class="form-group ">
+						<p class="font20 text-center"><a href="<spring:url value="resource/manage" />" >View Resource Status</a></p>
+					</div>
+					<div class="form-group ">
+						<p class="font20 text-center"><a href="<spring:url value="/incidents/" />" >View and Add Incidents</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
