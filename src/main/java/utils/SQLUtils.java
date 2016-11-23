@@ -13,6 +13,9 @@ public class SQLUtils {
 	public static final String LIKE = " LIKE ";
 	public static final String VALUES = " VALUES ";
 	public static final String COMMA = ",";
+	public static final String SET = " SET ";
+	public static final String INNER_JOIN = " INNER JOIN ";
+	public static final String ON = " ON ";
 	
 
 }

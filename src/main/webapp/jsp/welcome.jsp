@@ -43,7 +43,10 @@
 					<p class="font30 text-center"><b>Main Menu</b></p>
 					<hr>
 					<div class="form-group ">
-						<p class="font20 text-center"><a href="<spring:url value="/resource/" />" >View and Add Resources</a></p>
+						<p class="font20 text-center"><a href="<spring:url value="/resource/" />" >View, Manage and Add Resources</a></p>
+					</div>
+					<div class="form-group ">
+						<p class="font20 text-center"><a href="<spring:url value="resource/manage" />" >View Requests Status</a></p>
 					</div>
 					<div class="form-group ">
 						<p class="font20 text-center"><a href="<spring:url value="/incidents/" />" >View and Add Incidents</a></p>

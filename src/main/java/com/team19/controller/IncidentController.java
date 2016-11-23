@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.team19.controller.Service.HttpSessionService;
+import com.team19.controller.model.Deployed;
 import com.team19.controller.model.Incident;
+import com.team19.controller.repository.MangementRepository;
 import com.team19.controller.repository.IncidentRepository;
+import com.team19.controller.repository.ResourceRepository;
 
 /**
  * Created by akeem on 11/9/16.
@@ -33,6 +36,12 @@ public class IncidentController {
 
 	@Autowired
 	IncidentRepository incidentRepository;
+	
+	@Autowired
+	ResourceRepository resourceRepository;
+	
+	@Autowired
+	MangementRepository deployedRepositry;
 
 	@Autowired
 	HttpServletRequest request;
@@ -45,6 +54,7 @@ public class IncidentController {
 		String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
 		System.out.println(userName);
 		model.addAttribute("incidents", incidentRepository.getAllIncidents(userName));
+		model.addAttribute("resources", resourceRepository.getAvailableResources(userName));
 		model.addAttribute("username", userName);
 		return "incidents";
 	}
@@ -58,6 +68,19 @@ public class IncidentController {
 		
 		model.addAttribute("username", userName);
 		return "addIncident";
+	}
+	
+	@RequestMapping(value = "deploy", method = RequestMethod.POST)
+	public String deployIncident(Model model, @RequestParam Map<String, String> allRequestParams) {
+		for (Map.Entry<String, String> entry : allRequestParams.entrySet()) {
+			System.out.println(entry.getKey() + ":" + entry.getValue());
+		}
+		Deployed deployed = new Deployed();
+		deployed.setResourceID((Integer.parseInt(allRequestParams.get("ResourceID"))));
+		deployed.setIncidentId((Integer.parseInt(allRequestParams.get("incident"))));
+		deployed.setStartdate(new Timestamp(System.currentTimeMillis()));
+		deployedRepositry.deploy(deployed);
+		return "redirect:/incidents/";
 	}
 	
 	@RequestMapping(value = "add", method = RequestMethod.POST)
