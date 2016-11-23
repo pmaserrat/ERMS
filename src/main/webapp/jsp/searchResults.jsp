@@ -51,7 +51,7 @@
 				</table>
        		</div>
        		<div class="row margin-b10">
-        		<a class="font20" href="<spring:url value="../mainMenu/" />" >Close</a>
+        		<a class="font20" href="<spring:url value="/searchResource/" />" >Close</a>
         	</div>
         </div>
 	</body>

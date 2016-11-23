@@ -51,7 +51,7 @@ public class SearchResultsController {
 
 	public static String RESOURCE = " Resource ";
 	
-	@RequestMapping(value = "searchResults", method = RequestMethod.POST)
+	@RequestMapping(value = "searchResults", method = RequestMethod.GET)
 	public String searchResults(Model model, @RequestParam Map<String, String> allRequestParams) {
 
 		String sessionId = (String) request.getSession().getAttribute("user");

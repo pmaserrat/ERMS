@@ -41,7 +41,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-6 formPanel col-centered padding10">
-				<form action="/searchResults/" method="GET">
+				<form action="../searchResults/searchResults" method="GET">
 					<div class="form-group">
 						<label for="keyword">Keyword:</label> 
 						<input type="text" name="keyword" class="form-control"	id="keyword">
@@ -57,11 +57,11 @@
 						</select>
 					</div>
 					<hr>
-					<label class="form-group ">Location </label>
-						<div class="form-group ">
-							<label for="distance">Within </label>
-							<input type="text" name="distance" class="form-control" id="distance" />
-							<label for="distance">Kilometers of incident </label> 
+						<div class="row ">
+							<label class="form-group col-xs-1 margin-r10">Location:</label>
+							<label class="col-xs-1 font-normal" for="distance">Within </label>
+							<input type="text" name="distance" class="col-xs-3" id="distance" />
+							<label class="col-xs-3 font-normal" for="distance">Kilometers of incident </label> 
 						</div>
 					<hr>
 					<div class="form-group">

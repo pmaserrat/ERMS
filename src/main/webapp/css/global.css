@@ -22,6 +22,14 @@ body .padding10{
     margin: 0 auto;
 }
 
+body .margin-r10{
+	margin-right:10px;
+}
+
+.font-normal{
+    font-weight: normal;
+}
+
 .container{
 	padding-top:30px;
 }
@@ -109,10 +117,6 @@ body .padding10{
 	border-radius:5px;
 }
 
-.formPanel .submitDiv{
-	height:1px;
-}
-
 .formPanel div{
 	height: auto;
 }
@@ -124,7 +128,7 @@ body .padding10{
 }
 
 .welcomeMessage{
-	margin-top: 70px;
+	margin-top: 30px;
 	text-align: center;
 	font-size: 40px;
 }
