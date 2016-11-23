@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html>
 	<head>
 		<title>Welcome!</title>
@@ -39,15 +41,16 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-6 formPanel col-centered padding10">
-				<form action="add" method="POST">
+				<form action="/searchResults/" method="GET">
 					<div class="form-group">
 						<label for="keyword">Keyword:</label> 
 						<input type="text" name="keyword" class="form-control"	id="keyword">
 					</div>
 					<hr>
 					<div class="form-group">
-						<label for="PrimaryESF">Primary ESF:</label> 
+						<label for="PrimaryESF">Primary ESF:</label>
 						<select	name="PrimaryESF" id="primaryEsf">
+							<option value="">--Select ESF--</option>
 							<c:forEach items="${esfs}" var="esf">
 								<option value="${esf.number}">${esf.description}</option>
 							</c:forEach>
@@ -56,22 +59,28 @@
 					<hr>
 					<label class="form-group ">Location </label>
 						<div class="form-group ">
-							<label for="distance">Within 
-							<input type="text" name="distance" class="form-control" id="distance">
-							 Kilometers of incident </label> 
+							<label for="distance">Within </label>
+							<input type="text" name="distance" class="form-control" id="distance" />
+							<label for="distance">Kilometers of incident </label> 
 						</div>
 					<hr>
 					<div class="form-group">
 						<label for="incident">Incident:</label>
-						<select	name="incident" id="incident" multiple>
+						<select	name="incident" id="incident">
+							<option value="">--Select Incident--</option>
 							<c:forEach items="${incidents}" var="incident">
-								<option value="${incident.number}">${incident.description}</option>
+								<option value="${incident.ID}">(${incident.ID}) ${incident.description}</option>
 							</c:forEach>
 						</select>
 					</div>
 					<hr>
 					<div class="submitDiv">
-						<button type="submit" class="btn btn-default pull-right">Submit</button>
+						<button type="submit" class="btn btn-default pull-right">Search</button>
+					</div>
+				</form>
+				<form action="../mainMenu" method="POST">
+					<div class="submitDiv">
+						<button type="submit" class="btn btn-default pull-right" onclick="$(this).closest('form').submit()">Cancel</button>
 					</div>
 				</form>
 			</div>

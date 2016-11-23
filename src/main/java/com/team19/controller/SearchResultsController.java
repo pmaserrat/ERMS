@@ -35,8 +35,8 @@ import com.team19.controller.repository.ResourceRepository;
 import utils.SQLUtils;
 
 @Controller
-@RequestMapping("/searchResource/")
-public class SearchResourceController {
+@RequestMapping("/searchResults/")
+public class SearchResultsController {
 	@Autowired
 	HttpServletRequest request;
 
@@ -51,21 +51,41 @@ public class SearchResourceController {
 
 	public static String RESOURCE = " Resource ";
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public String searchResources(Model model) {
+	@RequestMapping(value = "searchResults", method = RequestMethod.POST)
+	public String searchResults(Model model, @RequestParam Map<String, String> allRequestParams) {
+
 		String sessionId = (String) request.getSession().getAttribute("user");
-		System.out.println(sessionId);
-		//String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
-		//System.out.println(userName);
-		//model.addAttribute("username", userName);
-		model.addAttribute("resources", resourceRepository.getAllResources());
-		model.addAttribute("esfs", esfRepository.getAllESFs());
-		model.addAttribute("incidents", incidentRepository.getAllIncidents());
+		Map<String, String[]> map = request.getParameterMap();
 		
-		return "searchResource";
+		System.out.println(sessionId);
+		System.out.println(map);
+		String keyword = allRequestParams.get("keyword");
+		String primaryESFID = allRequestParams.get("PrimaryESF");
+		String incidentID = allRequestParams.get("incident");		
+		String distance = allRequestParams.get("distance");		
+		
+		System.out.println(keyword);
+		System.out.println(primaryESFID);
+		System.out.println(incidentID);
+		System.out.println(distance);
+		String sql = "SELECT Resource.ID, Resource.Name, Resource.Username, Resource.Amount, Resource.CostTimeUnit, Resource.Status "
+				+ "FROM Resource "
+				+ "LEFT OUTER JOIN Primary_ESF ON Primary_ESF.ResourceID = Resource.ID "
+				+ "LEFT OUTER JOIN ESF ON Primary_ESF.Number = ESF.Number "
+				+ "LEFT OUTER JOIN Capabilities ON Capabilities.ID = Resource.ID "
+				+ "JOIN Incident "
+				+ "WHERE (Primary_ESF.Number IS NULL OR Primary_ESF.Number = %s) "
+				+ "OR (Resource.Name IS NULL OR Resource.Name LIKE '%%" + "%s" + "%%') "
+				+ "OR (Resource.Model IS NULL OR Resource.Model LIKE '%%" + "%s" + "%%') "
+				+ "OR (Capabilities.Capabilities IS NULL OR Capabilities.Capabilities LIKE '%%" + "%s" + "%%') "
+				+ "OR (Incident.Description IS NULL OR Incident.Description = %s) ";
+		System.out.println(sql);
+		String format_sql = String.format(sql, primaryESFID, keyword, keyword, keyword, incidentID);
+		System.out.println(format_sql);
+		List<Resource> resources = resourceRepository.getSelectedResources(format_sql);
+		model.addAttribute("resources", resources);
+		return "searchResults";
 	}
-	
-	
 	
 //	private Resource findResource(Map<String, String> allRequestParams) throws ParseException {
 //		DecimalFormat format = new DecimalFormat("###.########");

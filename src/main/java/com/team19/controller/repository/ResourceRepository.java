@@ -60,7 +60,7 @@ public class ResourceRepository {
 			resource.setNextAvailableDate((Timestamp) row.get("nextAvailableDate"));
 			resources.add(resource);
 		}
-
+			
 		return resources;
 
 	}
@@ -95,6 +95,48 @@ public class ResourceRepository {
 			resources.add(resource);
 		}
 
+		return resources;
+
+	}
+	
+	public List<Resource> getSelectedResources(String sql) {
+		/*
+		SELECT Resource.ID, Resource.Name, Resource.Username, Resource.Amount, Resource.CostTimeUnit, Resource.Status
+		FROM Resource
+		LEFT OUTER JOIN Primary_ESF ON Primary_ESF.ResourceId = Resource.ID
+		LEFT OUTER JOIN ESF ON Primary_ESF.Number = ESF.Number
+		LEFT OUTER JOIN Capabilities ON Capabilities.ID = Resource.ID 
+		JOIN Incident
+		WHERE Resource.ID = $resourceID 
+		AND Primary_ESF.Number = $esfNumber
+		AND ESF.Description = $esfDescription
+		OR Resource.Name LIKE '%$resourceName%' 
+		OR Resource.Model LIKE '%$resourceModel%' 
+		OR Capabilities.Capabilities LIKE '%keyword' 
+		OR Incident.Description = $incidentDescription;
+		*/
+		List<Resource> resources = new ArrayList<>();
+		
+	
+		//Need to get resource ID, esfnumber, esfdescription, keyword, and incident description from app
+				
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			Resource resource = new Resource();
+			resource.setID((Integer) row.get("ID"));
+			resource.setName((String) row.get("name"));
+			resource.setStatus((String) row.get("status"));
+			resource.setLongitude((BigDecimal) row.get("longitude"));
+			resource.setLatitude((BigDecimal) row.get("latitude"));
+			BigDecimal amt = (BigDecimal) row.get("amount");
+			resource.setAmount(amt.doubleValue());
+			resource.setCostTimeUnit((String) row.get("costTimeUnit"));
+			resource.setModel((String) row.get("model"));
+			resource.setNextAvailableDate((Timestamp) row.get("nextAvailableDate"));
+			resources.add(resource);
+		}
+			
 		return resources;
 
 	}
