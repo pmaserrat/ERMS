@@ -1,0 +1,3 @@
+SQL documents can be found in the "docs" folder in the root directory
+  -Team19_DDL.sql
+  -Team19_DML.sql
