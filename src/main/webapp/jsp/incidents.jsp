@@ -42,7 +42,7 @@
 				            <td>${incident.description}</td>
 				             <td> 
 				             <form class="form-group" action="repair" method="POST">
-				             <div class="form-control row">
+				             <div class="form-group row">
 				              <input type="hidden" id="incident" name="incident" value="${incident.ID}">
 								 <select name="ResourceID" id="ResourceID" multiple>
 									<c:forEach items="${resources}" var="resource">

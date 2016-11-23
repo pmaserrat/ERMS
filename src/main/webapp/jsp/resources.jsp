@@ -51,7 +51,7 @@
 						<td>${resource.model}</td>
 						<td>
 							<form class="form-group" action="repair" method="POST">
-								<div class="form-control row">
+								<div class="form-group row">
 									<input type="hidden" id="resource" name="resource"
 										value="${resource.ID}">
 									<button type="submit" class="btn btn-default pull-right">Send
@@ -88,7 +88,7 @@
 						<td>${deployed.description}</td>
 						<td>
 							<form class="form-group" action="return" method="POST">
-								<div class="form-control row">
+								<div class="form-group row">
 									<input type="hidden" id="resource" name="resource" value="${deployed.resourceID}">
 									<input type="hidden" id="incident" name="incident" value="${deployed.incidentID}">
 									<button type="submit" class="btn btn-default pull-right">Return</button>
@@ -120,7 +120,7 @@
 						<td>${inRepair.model}</td>
 						<td>
 							<form class="form-group" action=return method="POST">
-								<div class="form-control row">
+								<div class="form-group row">
 									<input type="hidden" id="resource" name="resource"value="${inRepair.ID}">
 									<button type="submit" class="btn btn-default pull-right">Return</button>
 								</div>
