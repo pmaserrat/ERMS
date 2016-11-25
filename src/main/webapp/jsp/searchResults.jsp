@@ -25,6 +25,10 @@
        			<div class="col-xs-12 col-centered welcomeMessage">
 				<p class="font30 text-center">Search Results!</p>
 			</div>
+			<div class="row">
+				<div class="col-xs-12 col-left incidentMessage">
+				<p class="font18 text-left">Search Results for Incident: (${incidentID}) ${incidentDes}
+			</div>
 				<br><br>	
 				<table class="table">
 				    <tr>
@@ -42,9 +46,9 @@
 				            <td>${resource.ID}</td>
 				            <td>${resource.name}</td>
 				            <td>${resource.username}</td>
+				            <td>${resource.amount} / ${resource.costTimeUnit}</td>
 				            <td>${resource.status}</td>
 				            <td>${resource.nextAvailableDate}</td>
-				            <td>${resource.amount} / ${resource.costTimeUnit}</td>
 				            <td>${resource.model}</td>
 				        </tr>
 					</c:forEach>

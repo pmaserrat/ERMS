@@ -21,6 +21,7 @@ import com.team19.controller.model.Deployed;
 import com.team19.controller.model.DeployedResource;
 import com.team19.controller.model.ESF;
 import com.team19.controller.model.Resource;
+import com.team19.controller.model.SearchedResource;
 
 import utils.SQLUtils;
 
@@ -50,7 +51,7 @@ public class ResourceRepository {
 
 		for (Map<String, Object> row : rows) {
 			Resource resource = new Resource();
-			resource.setID((Integer) row.get("ID"));
+			resource.setID((Integer) row.get("resourceID"));
 			resource.setName((String) row.get("name"));
 			resource.setStatus((String) row.get("status"));
 			resource.setLongitude((BigDecimal) row.get("longitude"));
@@ -102,28 +103,30 @@ public class ResourceRepository {
 	}
 	
 
-	public List<Resource> getSelectedResources(String sql) {
-		/*
-		SELECT Resource.ID, Resource.Name, Resource.Username, Resource.Amount, Resource.CostTimeUnit, Resource.Status
-		FROM Resource
-		LEFT OUTER JOIN Primary_ESF ON Primary_ESF.ResourceId = Resource.ID
-		LEFT OUTER JOIN ESF ON Primary_ESF.Number = ESF.Number
-		LEFT OUTER JOIN Capabilities ON Capabilities.ID = Resource.ID 
-		JOIN Incident
-		WHERE Resource.ID = $resourceID 
-		AND Primary_ESF.Number = $esfNumber
-		AND ESF.Description = $esfDescription
-		OR Resource.Name LIKE '%$resourceName%' 
-		OR Resource.Model LIKE '%$resourceModel%' 
-		OR Capabilities.Capabilities LIKE '%keyword' 
-		OR Incident.Description = $incidentDescription;
-		*/
-		List<Resource> resources = new ArrayList<>();
-		
-	
+	public List<SearchedResource> getSelectedResources(String sql) {
+		List<SearchedResource> resources = new ArrayList<>();
 		//Need to get resource ID, esfnumber, esfdescription, keyword, and incident description from app
-				
+		//Get ID, Name of resource, Owner of resource, Cost of resource, Status, Next Available, Distance
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		
+		for (Map<String, Object> row : rows) {
+			SearchedResource resource = new SearchedResource();
+			resource.setResourceID((Integer) row.get("resourceID"));
+			resource.setName((String) row.get("name"));
+			resource.setUsername((String) row.get("username")); 
+			BigDecimal amt = (BigDecimal) row.get("amount");
+			resource.setAmount(amt.doubleValue());
+			resource.setCostTimeUnit((String) row.get("costTimeUnit"));
+			resource.setStatus((String) row.get("status"));
+			resource.setNextAvailableDate((Timestamp) row.get("nextAvailableDate"));
+			resource.setRLongitude((BigDecimal) row.get("rlongitude"));
+			resource.setRLatitude((BigDecimal) row.get("rlatitude"));
+			resource.setILatitude((BigDecimal) row.get("ilatitude"));
+			resource.setILongitude((BigDecimal) row.get("ilongitude"));
+			resource.setModel((String) row.get("model"));
+			resources.add(resource);
+		}
+
 		return resources;
 	}
 	

@@ -78,6 +78,26 @@ public class IncidentRepository {
 		return incidents;
 
 	}
+	
+	public List<Incident> getSelectedIncidents(String sql) {
+
+		List<Incident> incidents = new ArrayList<>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			Incident incident = new Incident();
+			incident.setID((Integer) row.get("ID"));
+			incident.setDate((Timestamp) row.get("Date"));
+			incident.setLatitude((BigDecimal) row.get("Latitude"));
+			incident.setLongitude((BigDecimal) row.get("Longitude"));
+			incident.setDescription((String) row.get("Description"));
+			incidents.add(incident);
+		}
+
+		return incidents;
+
+	}
+	
 
 	public void createIncident(Incident incident) {
 		StringBuilder builder = new StringBuilder();
