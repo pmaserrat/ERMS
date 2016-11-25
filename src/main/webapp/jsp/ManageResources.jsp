@@ -3,6 +3,23 @@
 <html>
 <body>
 	<jsp:include page="header.jsp" />
+	<div class="row header">
+		<div class="col-xs-12">
+			<div class="col-xs-2">
+				<form action="../mainMenu" method="POST">
+					<a href="#" onclick="$(this).closest('form').submit()">Back to
+						Main Menu</a>
+				</form>
+			</div>
+			<div class="col-xs-8 text-center">Emergency Resource Management
+				System</div>
+			<div class="col-xs-2 pull-right">
+				<form action="../Logout" method="POST">
+					<a href="#" onclick="$(this).closest('form').submit()">Logout</a>
+				</form>
+			</div>
+		</div>
+	</div>
 	<div class="container">
 		<div class="row margin-b10">
 		</div>

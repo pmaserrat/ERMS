@@ -25,7 +25,7 @@
 				<p>Add Incident</p>
 			</div>
 			<div class="row">
-				<div class="col-xs-6 col-centered formPanel padding10">
+				<div class="col-xs-4 col-centered formPanel padding10">
 					<form action="add" method="POST">
 						<div class="form-group ">
 							<label class="control-label" for="Date">Date:</label>
