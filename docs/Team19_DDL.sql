@@ -123,7 +123,7 @@ FOREIGN KEY (ResourceID) REFERENCES Resource (ID));
 
 CREATE TABLE ESF(
 	Number integer (10) NOT NULL,
-	Description varchar(50) NOT NULL,
+	Description varchar(200) NOT NULL,
 	PRIMARY KEY (Number));
 
 CREATE TABLE Primary_ESF(
