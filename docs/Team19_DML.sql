@@ -2,18 +2,18 @@ BEGIN;
 USE Team19_db;
 /* Users*/
 INSERT INTO User (Username,Password,Name,Type) VALUES ('user1','user','Bob','U');
-INSERT INTO User (Username,Password,Name,Type) VALUES ('user2','user','Coast Gaurd','U');
-INSERT INTO User (Username,Password,Name,Type) VALUES ('user3','user','Enviromental Research','U');
+INSERT INTO User (Username,Password,Name,Type) VALUES ('user2','user','Coast Guard','U');
+INSERT INTO User (Username,Password,Name,Type) VALUES ('user3','user','Environmental Research','U');
 INSERT INTO User (Username,Password,Name,Type) VALUES ('user4','user','Pounce City Hall','U');
 
 INSERT INTO User (Username,Password,Name,Type) VALUES ('user5','user','Jim','U');
-INSERT INTO User (Username,Password,Name,Type) VALUES ('user6','user','Acess Board','U');
-INSERT INTO User (Username,Password,Name,Type) VALUES ('user7','user','Enviromental Labs','U');
+INSERT INTO User (Username,Password,Name,Type) VALUES ('user6','user','Access Board','U');
+INSERT INTO User (Username,Password,Name,Type) VALUES ('user7','user','Environmental Labs','U');
 INSERT INTO User (Username,Password,Name,Type) VALUES ('user8','user','Virginia Beach City Hall','U');
 
 /* Individual*/
-INSERT INTO Individual (Username,JobTitle,DateHired) VALUES ('user1',' Enviromental Engineer','2013-08-08');
-INSERT INTO Individual (Username,JobTitle,DateHired) VALUES ('user5','Resouce Manger','2014-07-08');
+INSERT INTO Individual (Username,JobTitle,DateHired) VALUES ('user1',' Environmental Engineer','2013-08-08');
+INSERT INTO Individual (Username,JobTitle,DateHired) VALUES ('user5','Resource Manger','2014-07-08');
 
 /*Goverment Agency */
 INSERT INTO Government_Agency (Username,Jurisdiction) VALUES ('user2','Subject Matter Jurisdiction');
@@ -87,6 +87,5 @@ INSERT INTO Requests(IncidentID, ResourceID, RequestDate, ReturnDate, ResourceOw
 /*Schedules_Repair*/
 INSERT INTO Schedules_Repair (Username,ResourceID, RepairStartDate, DaysInRepair) VALUES ('user1', 1, CURDATE(), '50');
 INSERT INTO Schedules_Repair (Username,ResourceID, RepairStartDate, DaysInRepair) VALUES ('user5', 102, CURDATE(), '50');
-
 
 COMMIT;
