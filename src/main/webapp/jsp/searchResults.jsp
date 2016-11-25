@@ -49,7 +49,7 @@
 				            <td>${resource.status}</td>
 				              <td>${resource.amount} / ${resource.costTimeUnit}</td>
 				            <td>${resource.model}</td>
-				            <td> <c:if test="${resource.status != 'In Repair' && resource.username != username}">
+				            <td> <c:if test="${resource.status != 'In Repair' && resource.username != username && incidentID != null}">
 								<form class="form-group" action="request" method="POST">
 								<div class="form-group row">
 

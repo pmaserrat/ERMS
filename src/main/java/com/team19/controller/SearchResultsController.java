@@ -72,12 +72,10 @@ public class SearchResultsController {
 		String keyword = allRequestParams.get("keyword");
 		String primaryESFID = allRequestParams.get("PrimaryESF");
 		String incidentparam = allRequestParams.get("incident");
-		String incidentID = "";
-		String incidentDescription = "";
+		String incidentID =null;
 		if (!incidentparam.isEmpty()) {
 			String[] incidentArray = incidentparam.split("=");
 			incidentID = incidentArray[0];
-			incidentDescription = incidentArray[1];
 			System.out.println(incidentID);
 		}
 
