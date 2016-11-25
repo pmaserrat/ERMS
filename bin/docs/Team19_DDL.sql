@@ -58,8 +58,8 @@ CREATE TABLE Incident(
 	ID integer(10) NOT NULL auto_increment,
 	Date datetime NOT NULL,
 	Description varchar(255) NOT NULL,
-	Latitude decimal(10,6) NOT NULL,
-	Longitude decimal(10,6) NOT NULL,
+	Latitude decimal(8,6) NOT NULL,
+	Longitude decimal(8,6) NOT NULL,
 	PRIMARY KEY (ID),
 FOREIGN KEY (Username) REFERENCES User (Username));
 
@@ -72,8 +72,8 @@ CREATE TABLE Resource(
 	NextAvailableDate datetime NOT NULL,
 	Status varchar(50) NOT NULL,
 	Model varchar(50) NOT NULL,
-	Latitude decimal(10,6) NOT NULL,
-	Longitude decimal(10,6) NOT NULL,
+	Latitude decimal(8,6) NOT NULL,
+	Longitude decimal(8,6) NOT NULL,
 	Amount decimal(9,2) NOT NULL,
 	CostTimeUnit varchar(50) NOT NULL,
 PRIMARY KEY (ID),
