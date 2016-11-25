@@ -45,10 +45,10 @@ INSERT INTO ESF(Number,Description) VALUES (14, 'Public Safety and Security');
 INSERT INTO ESF(Number,Description) VALUES (15, 'Long-Term Community Recovery');
 
 /*Cost Time Unit*/
-INSERT INTO Cost_Time_Unit(timeUnit) VALUES('Day');
-INSERT INTO Cost_Time_Unit(timeUnit) VALUES('Week');
-INSERT INTO Cost_Time_Unit(timeUnit) VALUES('Month');
-INSERT INTO Cost_Time_Unit(timeUnit) VALUES('Year');
+INSERT INTO Cost_Time_Unit(Unit) VALUES('Day');
+INSERT INTO Cost_Time_Unit(Unit) VALUES('Week');
+INSERT INTO Cost_Time_Unit(Unit) VALUES('Month');
+INSERT INTO Cost_Time_Unit(Unit) VALUES('Year');
 
 
 /*Resource*/
@@ -81,8 +81,8 @@ INSERT INTO Incident (ID, Username,Date, Description, Latitude,Longitude) VALUES
 INSERT INTO Incident (ID, Username,Date, Description, Latitude,Longitude) VALUES (103,'user1', CURDATE(), 'Test Incident 3', '37.12323','12.2123');
 
 /*Requests*/
-INSERT INTO Requests(IncidentID, ResourceID, RequestDate, ReturnDate, ResourceOwner, Submitter) VALUES (102, 100,CURDATE(), DATE_ADD(CURDATE(),INTERVAL 6 MONTH),'user5', 'user1' );
-INSERT INTO Requests(IncidentID, ResourceID, RequestDate, ReturnDate, ResourceOwner, Submitter) VALUES (103, 101, CURDATE(), DATE_ADD(CURDATE(),INTERVAL 6 MONTH),'user5', 'user1' );
+INSERT INTO Requests(IncidentID, ResourceID, RequestDate, ReturnDate, ResourceOwner, Submitter, Status) VALUES (102, 100,CURDATE(), DATE_ADD(CURDATE(),INTERVAL 6 MONTH),'user5', 'user1', 'inactive');
+INSERT INTO Requests(IncidentID, ResourceID, RequestDate, ReturnDate, ResourceOwner, Submitter, Status) VALUES (103, 101, CURDATE(), DATE_ADD(CURDATE(),INTERVAL 6 MONTH),'user5', 'user1', 'inactive');
 
 /*Schedules_Repair*/
 INSERT INTO Schedules_Repair (Username,ResourceID, RepairStartDate, DaysInRepair) VALUES ('user1', 1, CURDATE(), '50');
