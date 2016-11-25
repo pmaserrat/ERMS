@@ -35,13 +35,13 @@ public class ResourceController {
 
 	@Autowired
 	ESFRepository esfRepository; // TODO: remove
-	
+
 	@Autowired
 	RequestsResposiotry requestRepository;
 
 	@Autowired
 	HttpServletRequest request;
-	
+
 	@Autowired
 	MangementRepository mangementRepository;
 
