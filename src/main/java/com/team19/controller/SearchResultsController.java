@@ -30,7 +30,9 @@ import com.mysql.jdbc.Statement;
 import com.team19.controller.Service.HttpSessionService;
 import com.team19.controller.model.ESF;
 import com.team19.controller.model.Requests;
+import com.team19.controller.model.Incident;
 import com.team19.controller.model.Resource;
+import com.team19.controller.model.SearchedResource;
 import com.team19.controller.repository.ESFRepository;
 import com.team19.controller.repository.IncidentRepository;
 import com.team19.controller.repository.RequestsResposiotry;
@@ -40,7 +42,7 @@ import com.team19.controller.repository.SQLUtils;
 @Controller
 @RequestMapping("/searchResults/")
 public class SearchResultsController {
-	
+
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	@Autowired
 	HttpServletRequest request;
@@ -53,7 +55,7 @@ public class SearchResultsController {
 	
 	@Autowired
 	IncidentRepository incidentRepository;
-	
+
 	@Autowired
 	RequestsResposiotry requestRepository;
 
@@ -69,7 +71,16 @@ public class SearchResultsController {
 		System.out.println(map);
 		String keyword = allRequestParams.get("keyword");
 		String primaryESFID = allRequestParams.get("PrimaryESF");
-		String incidentID = allRequestParams.get("incident");		
+		String incidentparam = allRequestParams.get("incident");
+		String incidentID = "";
+		String incidentDescription = "";
+		if (!incidentparam.isEmpty()) {
+			String[] incidentArray = incidentparam.split("=");
+			incidentID = incidentArray[0];
+			incidentDescription = incidentArray[1];
+			System.out.println(incidentID);
+		}
+
 		String distance = allRequestParams.get("distance");		
 
 		List<Resource> resources = resourceRepository.getSelectedResources( incidentID,  primaryESFID,  keyword ,  distance);
@@ -82,7 +93,7 @@ public class SearchResultsController {
 	
 	@RequestMapping(value = "request", method = RequestMethod.POST)
 	public String createRequest(Model model, @RequestParam Map<String, String> allRequestParams) {
-		
+
 		for (Map.Entry<String, String> entry : allRequestParams.entrySet()) {
 			System.out.println(entry.getKey() + ":" + entry.getValue());
 		}
@@ -125,7 +136,7 @@ public class SearchResultsController {
 		System.out.println(requests);
 		return "redirect:/searchResource/";
 	}
-	
+
 //	private Resource findResource(Map<String, String> allRequestParams) throws ParseException {
 //		DecimalFormat format = new DecimalFormat("###.########");
 //		format.setParseBigDecimal(true);

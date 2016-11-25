@@ -69,7 +69,7 @@
 						<select	name="incident" id="incident">
 							<option value="">--Select Incident--</option>
 							<c:forEach items="${incidents}" var="incident">
-								<option value="${incident.ID}">(${incident.ID}) ${incident.description}</option>
+								<option value="${incident.ID}=${incident.description}">(${incident.ID}) ${incident.description}</option>
 							</c:forEach>
 						</select>
 					</div>

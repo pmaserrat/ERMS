@@ -64,22 +64,4 @@ public class SearchResourceController {
 		return "searchResource";
 	}
 	
-	
-	
-//	private Resource findResource(Map<String, String> allRequestParams) throws ParseException {
-//		DecimalFormat format = new DecimalFormat("###.########");
-//		format.setParseBigDecimal(true);
-//		Resource resource = new Resource();
-//		resource.setName(allRequestParams.get("resourceName"));
-//		resource.setAmount(Double.parseDouble(allRequestParams.get("cost")));
-//		resource.setModel(allRequestParams.get("model"));
-//		resource.setLatitude(new BigDecimal(allRequestParams.get("Lat")));
-//		resource.setLongitude(new BigDecimal(allRequestParams.get("Long")));
-//		resource.setCostTimeUnit(allRequestParams.get("Unit"));
-//		resource.setPrimaryESF(allRequestParams.get("PrimaryESF"));
-//
-//		return resource;
-//
-//	}
-	
 }

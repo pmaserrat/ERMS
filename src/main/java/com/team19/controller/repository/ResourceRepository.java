@@ -21,6 +21,7 @@ import com.team19.controller.model.Deployed;
 import com.team19.controller.model.DeployedResource;
 import com.team19.controller.model.ESF;
 import com.team19.controller.model.Resource;
+import com.team19.controller.model.SearchedResource;
 
 /**
  * Created by akeem on 11/5/16.
@@ -48,7 +49,7 @@ public class ResourceRepository {
 
 		for (Map<String, Object> row : rows) {
 			Resource resource = new Resource();
-			resource.setID((Integer) row.get("ID"));
+			resource.setID((Integer) row.get("resourceID"));
 			resource.setName((String) row.get("name"));
 			resource.setStatus((String) row.get("status"));
 			resource.setLongitude((BigDecimal) row.get("longitude"));
@@ -101,7 +102,7 @@ public class ResourceRepository {
 	
 
 	public List<Resource> getSelectedResources(String incidentID, String primaryESFID, String keyword , String distance) {
-		
+
 
 		List<Resource> resources = new ArrayList<>();
 		StringBuilder builder = new StringBuilder();
@@ -137,7 +138,7 @@ public class ResourceRepository {
 				resource.setAmount(amt.doubleValue());
 			}
 			resource.setCostTimeUnit((String) row.get("CostTimeUnit"));
-			
+
 
 			resources.add(resource);
 		}
