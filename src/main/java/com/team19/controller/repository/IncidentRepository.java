@@ -13,8 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import com.team19.controller.model.Incident;
 
-import utils.SQLUtils;
-
 @Repository
 public class IncidentRepository {
 

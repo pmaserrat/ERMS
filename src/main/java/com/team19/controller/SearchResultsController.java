@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -27,16 +29,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.mysql.jdbc.Statement;
 import com.team19.controller.Service.HttpSessionService;
 import com.team19.controller.model.ESF;
+import com.team19.controller.model.Requests;
 import com.team19.controller.model.Resource;
 import com.team19.controller.repository.ESFRepository;
 import com.team19.controller.repository.IncidentRepository;
+import com.team19.controller.repository.RequestsResposiotry;
 import com.team19.controller.repository.ResourceRepository;
-
-import utils.SQLUtils;
+import com.team19.controller.repository.SQLUtils;
 
 @Controller
 @RequestMapping("/searchResults/")
 public class SearchResultsController {
+	
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	@Autowired
 	HttpServletRequest request;
 
@@ -48,6 +53,9 @@ public class SearchResultsController {
 	
 	@Autowired
 	IncidentRepository incidentRepository;
+	
+	@Autowired
+	RequestsResposiotry requestRepository;
 
 	public static String RESOURCE = " Resource ";
 	
@@ -63,28 +71,59 @@ public class SearchResultsController {
 		String primaryESFID = allRequestParams.get("PrimaryESF");
 		String incidentID = allRequestParams.get("incident");		
 		String distance = allRequestParams.get("distance");		
-		
-		System.out.println(keyword);
-		System.out.println(primaryESFID);
-		System.out.println(incidentID);
-		System.out.println(distance);
-		String sql = "SELECT Resource.ID, Resource.Name, Resource.Username, Resource.Amount, Resource.CostTimeUnit, Resource.Status "
-				+ "FROM Resource "
-				+ "LEFT OUTER JOIN Primary_ESF ON Primary_ESF.ResourceID = Resource.ID "
-				+ "LEFT OUTER JOIN ESF ON Primary_ESF.Number = ESF.Number "
-				+ "LEFT OUTER JOIN Capabilities ON Capabilities.ID = Resource.ID "
-				+ "JOIN Incident "
-				+ "WHERE (Primary_ESF.Number IS NULL OR Primary_ESF.Number = %s) "
-				+ "OR (Resource.Name IS NULL OR Resource.Name LIKE '%%" + "%s" + "%%') "
-				+ "OR (Resource.Model IS NULL OR Resource.Model LIKE '%%" + "%s" + "%%') "
-				+ "OR (Capabilities.Capabilities IS NULL OR Capabilities.Capabilities LIKE '%%" + "%s" + "%%') "
-				+ "OR (Incident.Description IS NULL OR Incident.Description = %s) ";
-		System.out.println(sql);
-		String format_sql = String.format(sql, primaryESFID, keyword, keyword, keyword, incidentID);
-		System.out.println(format_sql);
-		List<Resource> resources = resourceRepository.getSelectedResources(format_sql);
+
+		List<Resource> resources = resourceRepository.getSelectedResources( incidentID,  primaryESFID,  keyword ,  distance);
 		model.addAttribute("resources", resources);
+		model.addAttribute("incidentID", incidentID);
+		String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
+		model.addAttribute("username", userName);
 		return "searchResults";
+	}
+	
+	@RequestMapping(value = "request", method = RequestMethod.POST)
+	public String createRequest(Model model, @RequestParam Map<String, String> allRequestParams) {
+		
+		for (Map.Entry<String, String> entry : allRequestParams.entrySet()) {
+			System.out.println(entry.getKey() + ":" + entry.getValue());
+		}
+		String param = allRequestParams.get("resource");
+		Integer resourceID = null;
+		Integer incidentID = null;
+		Timestamp returnDate = null;
+		String sessionId = (String) request.getSession().getAttribute("user");
+		String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
+		String owner = null;
+		if(param != null) {
+			resourceID = Integer.parseInt(param);
+		}
+		param = allRequestParams.get("incident");
+		if(param != null) {
+			incidentID = Integer.parseInt(param);
+		}
+		param = allRequestParams.get("Date");
+		if(param != null) {
+			Date date = null;
+			try {
+				date = dateFormat.parse(param);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			returnDate = new Timestamp(date.getTime());
+		}
+		param = allRequestParams.get("owner");
+		if (param != null) {
+			owner = param;
+		}
+		Requests requests = new Requests();
+		requests.setIncidentID(incidentID);
+		requests.setResourceID(resourceID);
+		requests.setReturnDate(returnDate);
+		requests.setRequestDate(new Timestamp(System.currentTimeMillis()));
+		requests.setSubmitter(userName);
+		requests.setResourceOwner(owner);
+		requestRepository.save(requests);
+		System.out.println(requests);
+		return "redirect:/searchResource/";
 	}
 	
 //	private Resource findResource(Map<String, String> allRequestParams) throws ParseException {

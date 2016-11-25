@@ -22,8 +22,6 @@ import com.team19.controller.model.DeployedResource;
 import com.team19.controller.model.ESF;
 import com.team19.controller.model.Resource;
 
-import utils.SQLUtils;
-
 /**
  * Created by akeem on 11/5/16.
  */
@@ -102,28 +100,47 @@ public class ResourceRepository {
 	}
 	
 
-	public List<Resource> getSelectedResources(String sql) {
-		/*
-		SELECT Resource.ID, Resource.Name, Resource.Username, Resource.Amount, Resource.CostTimeUnit, Resource.Status
-		FROM Resource
-		LEFT OUTER JOIN Primary_ESF ON Primary_ESF.ResourceId = Resource.ID
-		LEFT OUTER JOIN ESF ON Primary_ESF.Number = ESF.Number
-		LEFT OUTER JOIN Capabilities ON Capabilities.ID = Resource.ID 
-		JOIN Incident
-		WHERE Resource.ID = $resourceID 
-		AND Primary_ESF.Number = $esfNumber
-		AND ESF.Description = $esfDescription
-		OR Resource.Name LIKE '%$resourceName%' 
-		OR Resource.Model LIKE '%$resourceModel%' 
-		OR Capabilities.Capabilities LIKE '%keyword' 
-		OR Incident.Description = $incidentDescription;
-		*/
-		List<Resource> resources = new ArrayList<>();
+	public List<Resource> getSelectedResources(String incidentID, String primaryESFID, String keyword , String distance) {
 		
-	
+
+		List<Resource> resources = new ArrayList<>();
+		StringBuilder builder = new StringBuilder();
+		builder.append(SQLUtils.SELECT);
+		builder.append("Resource.ID, Resource.Name, Resource.Username, Resource.Amount, Resource.CostTimeUnit, Resource.Status");
+		builder.append(SQLUtils.FROM);
+		builder.append(RESOURCE);
+		builder.append(SQLUtils.JOIN + "Primary_ESF" + SQLUtils.ON + "Primary_ESF.ResourceID = Resource.ID");
+		builder.append(SQLUtils.JOIN + "ESF" + SQLUtils.ON + "Primary_ESF.Number = ESF.Number");
+		builder.append(SQLUtils.WHERE);
+		builder.append("(Primary_ESF.Number IS NULL OR Primary_ESF.Number = %s)");
+		builder.append(SQLUtils.OR);
+		builder.append("(Resource.Name IS NULL OR Resource.Name LIKE '%%" + "%s" + "%%')");
+		builder.append(SQLUtils.OR);
+		builder.append("(Resource.Model IS NULL OR Resource.Model LIKE '%%" + "%s" + "%%')");
+		builder.append(SQLUtils.OR);
+		builder.append("Resource.ID IN (SELECT ID FROM  `Capabilities` WHERE Capabilities.Capabilities like '%%" + "%s" + "%%')");
+		builder.append(SQLUtils.OR);
+		builder.append("EXISTS (SELECT Number FROM  `Additional_ESF` WHERE Number = %s AND Additional_ESF.ResourceId = Resource.ID) ");
+		String format_sql = String.format(builder.toString(), primaryESFID, keyword, keyword, keyword, primaryESFID);
+		System.out.println(format_sql);
 		//Need to get resource ID, esfnumber, esfdescription, keyword, and incident description from app
 				
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(format_sql);
+		for (Map<String, Object> row : rows) {
+			Resource resource = new Resource();
+			resource.setID((Integer) row.get("ID"));
+			resource.setName((String) row.get("Name"));
+			resource.setUsername((String) row.get("Username"));
+			resource.setStatus((String) row.get("Status"));
+			BigDecimal amt = (BigDecimal) row.get("Amount");
+			if(amt != null) {
+				resource.setAmount(amt.doubleValue());
+			}
+			resource.setCostTimeUnit((String) row.get("CostTimeUnit"));
+			
+
+			resources.add(resource);
+		}
 		return resources;
 	}
 	
@@ -151,7 +168,7 @@ public class ResourceRepository {
 			resource.setIncidentID((Integer) row.get("IncidentID"));
 			resource.setName((String) row.get("name"));
 			resource.setDescription((String) row.get("I_Description"));
-			resource.setStatus((String) row.get("status"));
+			resource.setStatus((String) row.get("Status"));
 			resource.setLongitude((BigDecimal) row.get("Longitude"));
 			resource.setLatitude((BigDecimal) row.get("R_Latittude"));
 			BigDecimal amt = (BigDecimal) row.get("amount");

@@ -31,8 +31,7 @@ import com.team19.controller.model.Resource;
 import com.team19.controller.repository.ESFRepository;
 import com.team19.controller.repository.IncidentRepository;
 import com.team19.controller.repository.ResourceRepository;
-
-import utils.SQLUtils;
+import com.team19.controller.repository.SQLUtils;
 
 @Controller
 @RequestMapping("/searchResource/")

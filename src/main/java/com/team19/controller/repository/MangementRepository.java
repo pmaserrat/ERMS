@@ -18,8 +18,6 @@ import com.team19.controller.model.Deployed;
 import com.team19.controller.model.Resource;
 import com.team19.controller.model.Schedules_Repair;
 
-import utils.SQLUtils;
-
 @Repository
 public class MangementRepository {
 	@Autowired
