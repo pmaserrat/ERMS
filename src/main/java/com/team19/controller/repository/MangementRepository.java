@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysql.jdbc.Statement;
 import com.team19.controller.model.Deployed;
 import com.team19.controller.model.Resource;
 import com.team19.controller.model.Schedules_Repair;
@@ -48,7 +47,7 @@ public class MangementRepository {
 			updateResource.append("Status = '%s'");
 			updateResource.append(SQLUtils.WHERE);
 			updateResource.append("ID = " + deployed.getResourceID());
-			sql = String.format(updateResource.toString(), Resource.DEPLOYED);
+			sql = String.format(updateResource.toString(), Resource.IN_USE);
 			
 			jdbcTemplate.update(sql);
 			

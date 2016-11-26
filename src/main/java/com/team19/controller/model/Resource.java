@@ -26,6 +26,7 @@ public class Resource {
     public final static String READY =  "Ready";
     public final static String DEPLOYED = "Deployed";
     public final static String IN_REPAIR = "In Repair";
+    public final static String IN_USE = "In Use";
    
 
     public String getUsername() {
