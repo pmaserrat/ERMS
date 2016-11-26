@@ -1,3 +1,15 @@
 SQL documents can be found in the "docs" folder in the root directory
   -Team19_DDL.sql
   -Team19_DML.sql
+
+  The files containing SQL are in the directory "/CS6400Fall16Team019/src/main/java/com/team19/controller/repository/"
+
+List of files:
+/CS6400Fall16Team019/src/main/java/com/team19/controller/repository/CostTimeUnitRepository.java
+/CS6400Fall16Team019/src/main/java/com/team19/controller/repository/ESFRepository.java
+/CS6400Fall16Team019/src/main/java/com/team19/controller/repository/IncidentRepository.java
+/CS6400Fall16Team019/src/main/java/com/team19/controller/repository/MangementRepository.java
+/CS6400Fall16Team019/src/main/java/com/team19/controller/repository/RequestsResposiotry.java
+/CS6400Fall16Team019/src/main/java/com/team19/controller/repository/ResourceRepository.java
+/CS6400Fall16Team019/src/main/java/com/team19/controller/repository/SQLUtils.java
+/CS6400Fall16Team019/src/main/java/com/team19/controller/repository/UserRepository.java

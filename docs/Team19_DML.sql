@@ -52,17 +52,17 @@ INSERT INTO Cost_Time_Unit(Unit) VALUES('Year');
 
 
 /*Resource*/
-INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user1','Resource1',CURDATE(),'Available', 'JKJDFD', '37.923122', '37.923122', '1123.20', 'Day');
-INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user1','Resource2',CURDATE(),'Available', 'DFDSFDS', '37.923122', '37.923122', '113.20', 'Week');
-INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user1','Resource3',CURDATE(),'Available', 'DFSDFSD', '37.923122', '37.923122', '1123.20', 'Month');
-INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user2','Resource3',CURDATE(),'Not Available', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Month');
-INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user2','Resource4',CURDATE(),'Not Available', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week');
-INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user2','Resource4',CURDATE(),'Not Available', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week');
-INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user3','Resource4',CURDATE(),'Not Available', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week');
+INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user1','Resource1',CURDATE(),'Ready', 'JKJDFD', '37.923122', '37.923122', '1123.20', 'Day');
+INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user1','Resource2',CURDATE(),'Ready', 'DFDSFDS', '37.923122', '37.923122', '113.20', 'Week');
+INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user1','Resource3',CURDATE(),'Ready', 'DFSDFSD', '37.923122', '37.923122', '1123.20', 'Month');
+INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user2','Resource3',CURDATE(),'In Repair', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Month');
+INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user2','Resource4',CURDATE(),'In Repair', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week');
+INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user2','Resource4',CURDATE(),'In Repair', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week');
+INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user3','Resource4',CURDATE(),'In Repair', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week');
 INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit) VALUES ('user4','Resource4',CURDATE(),'Not Available', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week');
-INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit, ID) VALUES ('user5','Resource4',CURDATE(),'Not Available', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week', 100);
-INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit, ID) VALUES ('user5','Resource4',CURDATE(),'Not Available', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week', 101);
-INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit, ID) VALUES ('user5','Resource4',CURDATE(),'Not Available', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week', 102);
+INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit, ID) VALUES ('user5','Resource4',CURDATE(),'In Repair', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week', 100);
+INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit, ID) VALUES ('user5','Resource4',CURDATE(),'In Repair', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week', 101);
+INSERT INTO Resource (Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit, ID) VALUES ('user5','Resource4',CURDATE(),'In Repair', 'DSFSDF', '37.923122', '37.923122', '1123.20', 'Week', 102);
 
 /*Capabilities*/
 INSERT INTO Capabilities (ID,Capabilities ) VALUES (100, 'Patrolling');
@@ -81,8 +81,8 @@ INSERT INTO Incident (ID, Username,Date, Description, Latitude,Longitude) VALUES
 INSERT INTO Incident (ID, Username,Date, Description, Latitude,Longitude) VALUES (103,'user1', CURDATE(), 'Test Incident 3', '37.12323','12.2123');
 
 /*Requests*/
-INSERT INTO Requests(IncidentID, ResourceID, RequestDate, ReturnDate, ResourceOwner, Submitter, Status) VALUES (102, 100,CURDATE(), DATE_ADD(CURDATE(),INTERVAL 6 MONTH),'user5', 'user1', 'inactive' );
-INSERT INTO Requests(IncidentID, ResourceID, RequestDate, ReturnDate, ResourceOwner, Submitter, Status) VALUES (103, 101, CURDATE(), DATE_ADD(CURDATE(),INTERVAL 6 MONTH),'user5', 'user1', 'inactive' );
+INSERT INTO Requests(IncidentID, ResourceID, RequestDate, ReturnDate, ResourceOwner, Submitter, Status) VALUES (102, 100,CURDATE(), DATE_ADD(CURDATE(),INTERVAL 6 MONTH),'user5', 'user1', 'Rejected' );
+INSERT INTO Requests(IncidentID, ResourceID, RequestDate, ReturnDate, ResourceOwner, Submitter, Status) VALUES (103, 101, CURDATE(), DATE_ADD(CURDATE(),INTERVAL 6 MONTH),'user5', 'user1', 'Rejected' );
 
 /*Schedules_Repair*/
 INSERT INTO Schedules_Repair (Username,ResourceID, RepairStartDate, DaysInRepair) VALUES ('user1', 1, CURDATE(), '50');

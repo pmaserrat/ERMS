@@ -100,14 +100,28 @@ public class MangementRepository {
 			jdbcTemplate.update(sql);
 			
 			StringBuilder updateResource = new StringBuilder();
+			
 			updateResource.append(SQLUtils.UPDATE);
 			updateResource.append(ResourceRepository.RESOURCE);
 			updateResource.append(SQLUtils.SET);
-			updateResource.append("Status = '%s'");
+			updateResource.append("Status = ?,");
+			updateResource.append("NextAvailableDate = ?");
 			updateResource.append(SQLUtils.WHERE);
-			updateResource.append("ID = " + resourceId);
-			sql = String.format(updateResource.toString(), Resource.READY);
-			jdbcTemplate.update(sql);
+			updateResource.append("ID = ?");
+			final String sql2 = updateResource.toString();
+			
+			jdbcTemplate.update(new PreparedStatementCreator() {
+				
+				@Override
+				public PreparedStatement createPreparedStatement(Connection arg0) throws SQLException {
+					PreparedStatement ps = arg0.prepareStatement(sql2);
+					ps.setString(1, Resource.READY);
+					ps.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+					ps.setInt(3, resourceId);
+					return ps;
+				}
+			});
+		
 			
 		}
 	
