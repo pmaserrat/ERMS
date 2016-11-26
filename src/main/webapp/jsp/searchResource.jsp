@@ -58,8 +58,8 @@
 					</div>
 					<hr>
 						<div class="row ">
-							<label class="form-group col-xs-1 margin-r10">Location:</label>
-							<label class="col-xs-1 font-normal" for="distance">Within </label>
+							<label class="form-group col-xs-2 margin-r10">Location:</label>
+							<label class="col-xs-2 font-normal" for="distance">Within </label>
 							<input type="text" name="distance" class="col-xs-3" id="distance" />
 							<label class="col-xs-3 font-normal" for="distance">Kilometers of incident </label> 
 						</div>
