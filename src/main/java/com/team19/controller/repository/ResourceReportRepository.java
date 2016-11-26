@@ -31,8 +31,8 @@ public class ResourceReportRepository {
                         " Sum(IF(Username='%s',1,0)) AS ResourcesInUse ");
         builder.append(SQLUtils.FROM);
         builder.append(" ESF " +
-                " LEFT JOIN Primary_esf ON Primary_esf.Number = ESF.Number "+
-                " LEFT JOIN Resource ON Primary_esf.ResourceId = Resource.ID "+
+                " LEFT JOIN Primary_ESF ON Primary_ESF.Number = ESF.Number "+
+                " LEFT JOIN Resource ON Primary_ESF.ResourceId = Resource.ID "+
                 " GROUP BY "+
                 " ESF.Description"
         );
