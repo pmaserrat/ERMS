@@ -22,10 +22,12 @@ public class Resource {
     private String PrimaryESF;
     private List<ESF> additonalESF;
     private List<String> capabilities;
+    private double distance;
     
     public final static String READY =  "Ready";
     public final static String DEPLOYED = "Deployed";
     public final static String IN_REPAIR = "In Repair";
+    public final static String IN_USE = "In Use";
    
 
     public String getUsername() {
@@ -131,7 +133,16 @@ public class Resource {
 	public void setCapabilities(List<String> capabilities) {
 		this.capabilities = capabilities;
 	}
+	
+	public double getDistance() {
+		return distance;
+	}
+	
+	public void setDistance(Double dist) {
+		this.distance = dist;
+	}
 
+	
 	@Override
 	public String toString() {
 		return "Resource [username=" + username + ", ID=" + ID + ", name=" + name + ", nextAvailableDate="

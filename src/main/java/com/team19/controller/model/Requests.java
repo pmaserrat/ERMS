@@ -14,10 +14,39 @@ public class Requests {
     private Timestamp returnDate;
     private String resourceOwner;
     private String submitter;
-    private String Status;
+    private String status;
+    private String resourceName;
+    private String incidentDescription;
+    private String resourceStatus;
 
 
-    public Integer getIncidentID() {
+
+
+	public String getResourceStatus() {
+		return resourceStatus;
+	}
+
+	public void setResourceStatus(String resourceStatus) {
+		this.resourceStatus = resourceStatus;
+	}
+
+	public String getResourceName() {
+		return resourceName;
+	}
+
+	public void setResourceName(String resourceName) {
+		this.resourceName = resourceName;
+	}
+
+	public String getIncidentDescription() {
+		return incidentDescription;
+	}
+
+	public void setIncidentDescription(String incidentDescription) {
+		this.incidentDescription = incidentDescription;
+	}
+
+	public Integer getIncidentID() {
         return incidentID;
     }
 
@@ -65,11 +94,15 @@ public class Requests {
         this.submitter = submitter;
     }
 
-    public String getStatus() {
-        return Status;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public void setStatus(String status) {
-        Status = status;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
+    
+    
 }

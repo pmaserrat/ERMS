@@ -2,6 +2,7 @@ body {
 	background-image: url("../images/background1.jpeg");
 	background-repeat: no-repeat;
 	background-size: cover;
+	padding-bottom: 80px;
 }
 
 .font30{
@@ -19,6 +20,14 @@ body .padding10{
 .col-centered{
     float: none!important;
     margin: 0 auto;
+}
+
+body .margin-r10{
+	margin-right:10px;
+}
+
+.font-normal{
+    font-weight: normal;
 }
 
 .container{
@@ -108,10 +117,6 @@ body .padding10{
 	border-radius:5px;
 }
 
-.formPanel .submitDiv{
-	height:1px;
-}
-
 .formPanel div{
 	height: auto;
 }
@@ -123,7 +128,7 @@ body .padding10{
 }
 
 .welcomeMessage{
-	margin-top: 70px;
+	margin-top: 30px;
 	text-align: center;
 	font-size: 40px;
 }

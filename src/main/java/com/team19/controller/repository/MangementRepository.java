@@ -13,12 +13,9 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysql.jdbc.Statement;
 import com.team19.controller.model.Deployed;
 import com.team19.controller.model.Resource;
 import com.team19.controller.model.Schedules_Repair;
-
-import utils.SQLUtils;
 
 @Repository
 public class MangementRepository {
@@ -50,7 +47,7 @@ public class MangementRepository {
 			updateResource.append("Status = '%s'");
 			updateResource.append(SQLUtils.WHERE);
 			updateResource.append("ID = " + deployed.getResourceID());
-			sql = String.format(updateResource.toString(), Resource.DEPLOYED);
+			sql = String.format(updateResource.toString(), Resource.IN_USE);
 			
 			jdbcTemplate.update(sql);
 			
@@ -102,14 +99,28 @@ public class MangementRepository {
 			jdbcTemplate.update(sql);
 			
 			StringBuilder updateResource = new StringBuilder();
+			
 			updateResource.append(SQLUtils.UPDATE);
 			updateResource.append(ResourceRepository.RESOURCE);
 			updateResource.append(SQLUtils.SET);
-			updateResource.append("Status = '%s'");
+			updateResource.append("Status = ?,");
+			updateResource.append("NextAvailableDate = ?");
 			updateResource.append(SQLUtils.WHERE);
-			updateResource.append("ID = " + resourceId);
-			sql = String.format(updateResource.toString(), Resource.READY);
-			jdbcTemplate.update(sql);
+			updateResource.append("ID = ?");
+			final String sql2 = updateResource.toString();
+			
+			jdbcTemplate.update(new PreparedStatementCreator() {
+				
+				@Override
+				public PreparedStatement createPreparedStatement(Connection arg0) throws SQLException {
+					PreparedStatement ps = arg0.prepareStatement(sql2);
+					ps.setString(1, Resource.READY);
+					ps.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+					ps.setInt(3, resourceId);
+					return ps;
+				}
+			});
+		
 			
 		}
 	

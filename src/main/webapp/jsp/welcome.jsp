@@ -51,6 +51,12 @@
 					<div class="form-group ">
 						<p class="font20 text-center"><a href="<spring:url value="/incidents/" />" >View and Add Incidents</a></p>
 					</div>
+					<div class="form-group ">
+						<p class="font20 text-center"><a href="<spring:url value="/searchResource/" />" >Search Resources</a></p>
+					</div>
+			        <div class="form-group ">
+						<p class="font20 text-center"><a href="<spring:url value="/resourceReport/" />" >Resource Report</a></p>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -41,8 +41,8 @@
 				            <td>(${incident.latitude}, ${incident.longitude})</td>
 				            <td>${incident.description}</td>
 				             <td> 
-				             <form class="form-group" action="repair" method="POST">
-				             <div class="form-control row">
+				             <form class="form-group" action="deploy" method="POST">
+				             <div class="form-group row">
 				              <input type="hidden" id="incident" name="incident" value="${incident.ID}">
 								 <select name="ResourceID" id="ResourceID" multiple>
 									<c:forEach items="${resources}" var="resource">
