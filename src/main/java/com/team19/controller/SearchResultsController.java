@@ -84,8 +84,8 @@ public class SearchResultsController {
 		if (incidentID != null) {
 			Incident incident = incidentRepository.getSearchedIncident(incidentID);
 
-			incident_lat = incident.getLatitude().doubleValue();
-			incident_lon = incident.getLongitude().doubleValue();
+			incident_lat = Math.toRadians(incident.getLatitude().doubleValue());
+			incident_lon = Math.toRadians(incident.getLongitude().doubleValue());
 
 			double lat_diff;
 			double long_diff;
@@ -95,11 +95,11 @@ public class SearchResultsController {
 			List<Resource> resources_del = new ArrayList<>();
 			// Filter resources if distance is set
 			for (Resource resource : resources) {
-				double resource_lat = resource.getLatitude().doubleValue();
-				double resource_lon = resource.getLongitude().doubleValue();
+				double resource_lat = Math.toRadians(resource.getLatitude().doubleValue());
+				double resource_lon = Math.toRadians(resource.getLongitude().doubleValue());
 
-				lat_diff = Math.toRadians(incident_lat - resource_lat);
-				long_diff = Math.toRadians(incident_lon - resource_lon);
+				lat_diff = incident_lat - resource_lat;
+				long_diff = incident_lon - resource_lon;
 				a = Math.pow(Math.sin(lat_diff / 2), 2)
 						+ Math.cos(resource_lat) * Math.cos(incident_lat) * Math.pow(Math.sin(long_diff / 2), 2);
 				c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
