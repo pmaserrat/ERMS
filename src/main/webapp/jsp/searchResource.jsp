@@ -40,7 +40,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-6 formPanel col-centered padding10">
+			<div class="col-xs-4 formPanel col-centered padding10">
 				<form action="../searchResults/searchResults" method="GET">
 					<div class="form-group">
 						<label for="keyword">Keyword:</label> 
