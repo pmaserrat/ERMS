@@ -21,9 +21,14 @@
 		</div>
 	</div>
 	<div class="container">
-		<div class="row margin-b10">
-		</div>
 		<div class="row">
+			<div class="col-xs-12 col-centered welcomeMessage">
+				<p class="font30 text-center">
+					Requests Status for <b>${username}!</b>
+				</p>
+			</div>
+			<br>
+			<br>
 			<p>Requests submitted by me</p>
 			<table class="table">
 				<tr>
