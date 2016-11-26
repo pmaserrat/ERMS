@@ -44,7 +44,7 @@ public class ResourceRepository {
 		builder.append(RESOURCE);
 
 		String sql = builder.toString();
-		
+
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map<String, Object> row : rows) {
@@ -61,11 +61,11 @@ public class ResourceRepository {
 			resource.setNextAvailableDate((Timestamp) row.get("nextAvailableDate"));
 			resources.add(resource);
 		}
-			
+
 		return resources;
 
 	}
-	
+
 	public List<Resource> getAllResources(String userName) {
 
 		List<Resource> resources = new ArrayList<>();
@@ -99,12 +99,12 @@ public class ResourceRepository {
 		return resources;
 
 	}
-	
 
-	public List<SearchedResource> getSelectedResources(String incidentID, String primaryESFID, String keyword,
+
+	public List<Resource> getSelectedResources(String incidentID, String primaryESFID, String keyword,
 			String distance) {
 
-		List<SearchedResource> resources = new ArrayList<>();
+		List<Resource> resources = new ArrayList<>();
 		StringBuilder builder = new StringBuilder();
 		builder.append(SQLUtils.SELECT);
 		builder.append(
@@ -114,13 +114,15 @@ public class ResourceRepository {
 		builder.append(SQLUtils.FROM);
 		builder.append(RESOURCE);
 
-		if (!primaryESFID.isEmpty()) {
+
+		if (primaryESFID != null && !"".equals(primaryESFID)) {
 			builder.append(SQLUtils.JOIN + "Primary_ESF" + SQLUtils.ON + "Primary_ESF.ResourceID = Resource.ID");
 			builder.append(SQLUtils.JOIN + "ESF" + SQLUtils.ON + "Primary_ESF.Number = ESF.Number");
 		}
 
 		builder.append(SQLUtils.WHERE);
-		if (!primaryESFID.isEmpty()) {
+
+		if (primaryESFID != null && !"".equals(primaryESFID)) {
 			builder.append("(Primary_ESF.Number IS NULL OR Primary_ESF.Number = %s)");
 			builder.append(SQLUtils.AND);
 		}
@@ -132,6 +134,7 @@ public class ResourceRepository {
 		builder.append(SQLUtils.OR);
 		builder.append("Resource.ID IN (SELECT ID FROM  `Capabilities` WHERE Capabilities.Capabilities like '%%" + "%s"
 				+ "%%')");
+
 		
 		
 		if (primaryESFID != null && !"".equals(primaryESFID)) {
@@ -146,12 +149,15 @@ public class ResourceRepository {
 		 format_sql = String.format(builder.toString(), keyword, keyword, keyword);
 		}
 		System.out.println(format_sql);
-		
+
+		// Need to get resource ID, esfnumber, esfdescription, keyword, and
+		// incident description from app
+
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(format_sql);
 		System.out.println(rows);
 		for (Map<String, Object> row : rows) {
-			SearchedResource resource = new SearchedResource();
-			resource.setResourceID((Integer) row.get("ID"));
+			Resource resource = new Resource();
+			resource.setID((Integer) row.get("ID"));
 			resource.setName((String) row.get("Name"));
 			resource.setUsername((String) row.get("Username"));
 			resource.setStatus((String) row.get("Status"));
@@ -161,22 +167,21 @@ public class ResourceRepository {
 			}
 			resource.setCostTimeUnit((String) row.get("CostTimeUnit"));
 			resource.setNextAvailableDate((Timestamp) row.get("nextAvailableDate"));
-			resource.setRLongitude((BigDecimal) row.get("rlongitude"));
-			resource.setRLatitude((BigDecimal) row.get("rlatitude"));
-			resource.setILatitude((BigDecimal) row.get("ilatitude"));
-			resource.setILongitude((BigDecimal) row.get("ilongitude"));
+			resource.setLongitude((BigDecimal) row.get("rlongitude"));
+			resource.setLatitude((BigDecimal) row.get("rlatitude"));
 			resource.setModel((String) row.get("model"));
 			resources.add(resource);
 		}
 		return resources;
 	}
-	
+
 	public List<DeployedResource> getDeployedlResources(String userName) {
 		List<DeployedResource> resources = new ArrayList<>();
-		
+
 		StringBuilder builder = new StringBuilder();
 		builder.append(SQLUtils.SELECT);
-		builder.append("D.ResourceID as ResourceID, R.Username,name,NextAvailableDate,Status,Model,R.Latitude as R_Latittude,R.Longitude as R_longitude ,Amount,CostTimeUnit, D.IncidentID AS IncidentID, I.Description AS I_Description");
+		builder.append(
+				"D.ResourceID as ResourceID, R.Username,name,NextAvailableDate,Status,Model,R.Latitude as R_Latittude,R.Longitude as R_longitude ,Amount,CostTimeUnit, D.IncidentID AS IncidentID, I.Description AS I_Description");
 		builder.append(SQLUtils.FROM);
 		builder.append(RESOURCE + "AS R");
 		builder.append(SQLUtils.INNER_JOIN + "Deployed AS D");
@@ -208,10 +213,10 @@ public class ResourceRepository {
 
 		return resources;
 	}
-	
+
 	public List<Resource> getInRepairlResources(String userName) {
-		List<Resource> resources  = new ArrayList<>();
-		
+		List<Resource> resources = new ArrayList<>();
+
 		StringBuilder builder = new StringBuilder();
 		builder.append(SQLUtils.SELECT);
 		builder.append("ID, R.Username,name,NextAvailableDate,Status,Model,Latitude,Longitude,Amount,CostTimeUnit");
@@ -223,7 +228,7 @@ public class ResourceRepository {
 		builder.append("R.Username = '%s';");
 		String sql = String.format(builder.toString(), userName);
 		System.out.println(sql);
-	
+
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map<String, Object> row : rows) {
@@ -243,8 +248,7 @@ public class ResourceRepository {
 		System.out.println(resources.size());
 		return resources;
 	}
-	
-	
+
 	public List<Resource> getAvailableResources(String userName) {
 		List<Resource> resources = new ArrayList<>();
 		StringBuilder builder = new StringBuilder();
@@ -253,10 +257,11 @@ public class ResourceRepository {
 		builder.append(SQLUtils.FROM);
 		builder.append(RESOURCE + "AS R");
 		builder.append(SQLUtils.WHERE);
-		builder.append("R.ID NOT IN (SELECT ResourceID FROM `Deployed` UNION SELECT ResourceID FROM  `Schedules_Repair` )");
+		builder.append(
+				"R.ID NOT IN (SELECT ResourceID FROM `Deployed` UNION SELECT ResourceID FROM  `Schedules_Repair` )");
 		builder.append(SQLUtils.AND);
 		builder.append("Username = '%s';");
-		
+
 		String sql = String.format(builder.toString(), userName);
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
@@ -277,7 +282,7 @@ public class ResourceRepository {
 
 		return resources;
 	}
-		
+
 	@Transactional
 	public Integer createResource(final Resource resource) {
 
@@ -290,9 +295,9 @@ public class ResourceRepository {
 		final String sql = builder.toString();
 		System.out.println(sql);
 		GeneratedKeyHolder holder = new GeneratedKeyHolder();
-		
+
 		jdbcTemplate.update(new PreparedStatementCreator() {
-			
+
 			@Override
 			public PreparedStatement createPreparedStatement(Connection arg0) throws SQLException {
 				PreparedStatement ps = arg0.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -300,40 +305,40 @@ public class ResourceRepository {
 				ps.setString(2, resource.getName());
 				ps.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 				ps.setString(4, Resource.READY);
-				ps.setString(5,  resource.getModel());
+				ps.setString(5, resource.getModel());
 				ps.setBigDecimal(6, resource.getLatitude());
 				ps.setBigDecimal(7, resource.getLongitude());
 				ps.setDouble(8, resource.getAmount());
 				ps.setString(9, resource.getCostTimeUnit());
 				return ps;
 			}
-		}, holder );
-		
+		}, holder);
+
 		Integer id = holder.getKey().intValue();
-		//Insert capabilites
+		// Insert capabilites
 		StringBuilder capabilitySQL = new StringBuilder();
 		capabilitySQL.append(SQLUtils.INSERT_INTO);
 		capabilitySQL.append("Capabilities");
 		capabilitySQL.append("(ID, Capabilities)");
 		capabilitySQL.append(SQLUtils.VALUES + "(?, ?)");
-		 String sql2 = capabilitySQL.toString();
+		String sql2 = capabilitySQL.toString();
 		for (String capability : resource.getCapabilities()) {
 
 			jdbcTemplate.update(sql2, new Object[] { id, capability });
 		}
-		//insert Primary ESF
+		// insert Primary ESF
 		StringBuilder primaryESFSQL = new StringBuilder();
 		primaryESFSQL.append(SQLUtils.INSERT_INTO);
 		primaryESFSQL.append("Primary_ESF");
 		primaryESFSQL.append("(	Number, 	ResourceId)");
 		primaryESFSQL.append(SQLUtils.VALUES + "(?, ?)");
 		final String sql3 = primaryESFSQL.toString();
-		
+
 		jdbcTemplate.update(sql3, new Object[] { Integer.parseInt(resource.getPrimaryESF()), id });
-		
-		//insert Additional esf
+
+		// insert Additional esf
 		for (ESF esf : resource.getAdditonalESF()) {
-			StringBuilder addtionalESFSQL= new StringBuilder();
+			StringBuilder addtionalESFSQL = new StringBuilder();
 			addtionalESFSQL.append(SQLUtils.INSERT_INTO);
 			addtionalESFSQL.append("Additional_ESF");
 			addtionalESFSQL.append("(	Number, 	ResourceId)");

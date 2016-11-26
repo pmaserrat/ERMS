@@ -72,12 +72,10 @@ public class SearchResultsController {
 		String keyword = allRequestParams.get("keyword");
 		String primaryESFID = allRequestParams.get("PrimaryESF");
 		String incidentparam = allRequestParams.get("incident");
-		String incidentID = "";
-		String incidentDescription = "";
+		String incidentID =null;
 		if (!incidentparam.isEmpty()) {
 			String[] incidentArray = incidentparam.split("=");
 			incidentID = incidentArray[0];
-			incidentDescription = incidentArray[1];
 			System.out.println(incidentID);
 		}
 
@@ -86,28 +84,27 @@ public class SearchResultsController {
 		System.out.println(primaryESFID);
 		System.out.println(distance);
 	
-		List<SearchedResource> resources = resourceRepository.getSelectedResources(incidentID, primaryESFID, keyword, distance);
-		System.out.println(resources);
-		
+		List<Resource> resources = resourceRepository.getSelectedResources(incidentID, primaryESFID, keyword, distance);
+
 		double lat_diff;
 		double long_diff;
 		double a;
 		double c;
 		double d;
 		//Filter resources if distance is set
-		for (SearchedResource resource : resources) {
-			double resource_lat = resource.getRLatitude().doubleValue();
-			double resource_lon = resource.getRLongitude().doubleValue();
-			double incident_lat = resource.getILatitude().doubleValue();
-			double incident_lon = resource.getILongitude().doubleValue();
+		for (Resource resource : resources) {
+			double resource_lat = resource.getLatitude().doubleValue();
+			double resource_lon = resource.getLongitude().doubleValue();
+			//double incident_lat = resource.getILatitude().doubleValue();
+			//double incident_lon = resource.getILongitude().doubleValue();
 //			System.out.println("R Latitude: " + resource_lat + " R Longitude: " + resource_lon);
 //			System.out.println("I Latitude: " + incident_lat + " I Longitude: " + incident_lon);
-			lat_diff = Math.toRadians(incident_lat - resource_lat);
-			long_diff = Math.toRadians(incident_lon - resource_lon);
-			a = Math.pow(Math.sin(lat_diff/2), 2) + Math.cos(resource_lat) * Math.cos(incident_lat) * Math.pow(Math.sin(long_diff/2), 2);
-			c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-			d = 6371 * c;
-			System.out.println("Distance: " + d);
+//			lat_diff = Math.toRadians(incident_lat - resource_lat);
+//			long_diff = Math.toRadians(incident_lon - resource_lon);
+//			a = Math.pow(Math.sin(lat_diff/2), 2) + Math.cos(resource_lat) * Math.cos(incident_lat) * Math.pow(Math.sin(long_diff/2), 2);
+//			c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//			d = 6371 * c;
+//			System.out.println("Distance: " + d);
 			
 			//Calculate distances between each resource and incident
 			
