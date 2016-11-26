@@ -94,7 +94,6 @@ CREATE TABLE Requests(
 	ReturnDate datetime NOT NULL,
 	ResourceOwner varchar(50) NOT NULL,
 	Submitter varchar(50) NOT NULL,
-	Status varchar(50) NOT NULL,
 	PRIMARY KEY (IncidentID, ResourceID),
 FOREIGN KEY (IncidentID) REFERENCES Incident (ID),
 FOREIGN KEY (ResourceID) REFERENCES Resource (ID),
@@ -123,7 +122,7 @@ FOREIGN KEY (ResourceID) REFERENCES Resource (ID));
 
 CREATE TABLE ESF(
 	Number integer (10) NOT NULL,
-	Description varchar(50) NOT NULL,
+	Description varchar(200) NOT NULL,
 	PRIMARY KEY (Number));
 
 CREATE TABLE Primary_ESF(
