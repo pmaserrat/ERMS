@@ -82,8 +82,89 @@ public class SearchResultsController {
 		}
 
 		String distance = allRequestParams.get("distance");		
+		String sql = "";
+		System.out.println(keyword);
+		System.out.println(primaryESFID);
+		System.out.println(distance);
+		
+		sql = "SELECT DISTINCT Resource.ID as resourceID, Resource.Name, Resource.Username, Resource.Amount, Resource.CostTimeUnit, Resource.Status, "
+				+ "Resource.NextAvailableDate, Resource.Latitude AS rlatitude, Resource.Longitude AS rlongitude, Incident.Latitude AS ilatitude, Incident.Longitude AS ilongitude "
+				+ "FROM Resource "
+				+ "JOIN Incident ";
+		
+		//Have esfnumber, esfdescription, keyword, and incident description from app
+		//Get ID, Name of resource, Owner of resource, Cost of resource, Status, Next Available, Distance
+		if (keyword.isEmpty() && primaryESFID.isEmpty() && incidentID.isEmpty() && distance.isEmpty()) {
+			List<SearchedResource> resources = resourceRepository.getSelectedResources(incidentID, primaryESFID, keyword, distance);
+			model.addAttribute("resources", resources);
+		} else {
+					
+			//Build table joins first
+			if (!incidentID.isEmpty() || !distance.isEmpty()) {
+				model.addAttribute("incidentID", incidentID);
+				model.addAttribute("incidentDes", incidentDescription);
+			}
 
-		List<Resource> resources = resourceRepository.getSelectedResources( incidentID,  primaryESFID,  keyword ,  distance);
+			if (!keyword.isEmpty()) {
+				String join_capabilities = "LEFT OUTER JOIN Capabilities ON Capabilities.ID = resourceID ";
+				sql = sql + join_capabilities;
+			}
+					
+			if (!primaryESFID.isEmpty()) {
+				String join_ESF = "LEFT OUTER JOIN Primary_ESF ON Primary_ESF.ResourceID = resourceID ";
+				sql = sql + join_ESF;
+			}
+					
+			sql = sql + "WHERE ";
+					
+			//Deal with queries
+			if (!keyword.isEmpty()) {
+				String resource_name_query = "Resource.Name LIKE '%" + keyword + "%' ";
+				String resource_model_query = "OR Resource.Model LIKE '%" + keyword + "%' ";
+				String capabilities_query = "OR Capabilities.Capabilities LIKE '%" + keyword + "%' ";
+				sql = sql + "(" + resource_name_query + resource_model_query + capabilities_query + ")";
+			}
+					
+			if (!primaryESFID.isEmpty()) {
+				if (keyword.isEmpty()) {
+					String primary_ESF_query = "Primary_ESF.Number = " + primaryESFID + " ";
+					sql = sql + primary_ESF_query;
+				}
+				else {
+					String primary_ESF_query = "AND Primary_ESF.Number = " + primaryESFID + " ";
+					sql = sql + primary_ESF_query;
+				}
+			}
+					
+			if (!incidentID.isEmpty()) {
+				if (keyword.isEmpty() && primaryESFID.isEmpty() && distance.isEmpty()) {
+					String incident_query = "Incident.ID = " + incidentID;
+					sql = sql + incident_query;
+				}
+				else {
+					String incident_query = "AND Incident.ID = " + incidentID;
+					sql = sql + incident_query;
+				}
+			}
+					
+					
+			System.out.println(sql);
+		}	
+		List<SearchedResource> resources = resourceRepository.getSelectedResources(incidentID, primaryESFID, keyword, distance);
+		System.out.println(resources);
+		
+		//Filter resources if distance is set
+		for (SearchedResource resource : resources) {
+			BigDecimal resource_lat = resource.getRLatitude();
+			BigDecimal resource_lon = resource.getRLongitude();
+			BigDecimal incident_lat = resource.getILatitude();
+			BigDecimal incident_lon = resource.getILongitude();
+			System.out.println("R Latitude: " + resource_lat + " R Longitude: " + resource_lon);
+			System.out.println("I Latitude: " + incident_lat + " I Longitude: " + incident_lon);
+		} 
+				
+
+		System.out.println(resources);
 		model.addAttribute("resources", resources);
 		model.addAttribute("incidentID", incidentID);
 		String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
@@ -136,21 +217,5 @@ public class SearchResultsController {
 		System.out.println(requests);
 		return "redirect:/searchResource/";
 	}
-
-//	private Resource findResource(Map<String, String> allRequestParams) throws ParseException {
-//		DecimalFormat format = new DecimalFormat("###.########");
-//		format.setParseBigDecimal(true);
-//		Resource resource = new Resource();
-//		resource.setName(allRequestParams.get("resourceName"));
-//		resource.setAmount(Double.parseDouble(allRequestParams.get("cost")));
-//		resource.setModel(allRequestParams.get("model"));
-//		resource.setLatitude(new BigDecimal(allRequestParams.get("Lat")));
-//		resource.setLongitude(new BigDecimal(allRequestParams.get("Long")));
-//		resource.setCostTimeUnit(allRequestParams.get("Unit"));
-//		resource.setPrimaryESF(allRequestParams.get("PrimaryESF"));
-//
-//		return resource;
-//
-//	}
 	
 }

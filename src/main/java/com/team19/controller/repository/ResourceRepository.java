@@ -101,44 +101,61 @@ public class ResourceRepository {
 	}
 	
 
-	public List<Resource> getSelectedResources(String incidentID, String primaryESFID, String keyword , String distance) {
+	public List<SearchedResource> getSelectedResources(String incidentID, String primaryESFID, String keyword,
+			String distance) {
 
-
-		List<Resource> resources = new ArrayList<>();
+		List<SearchedResource> resources = new ArrayList<>();
 		StringBuilder builder = new StringBuilder();
 		builder.append(SQLUtils.SELECT);
-		builder.append("Resource.ID, Resource.Name, Resource.Username, Resource.Amount, Resource.CostTimeUnit, Resource.Status");
+		builder.append(
+				"Resource.ID, Resource.Name, Resource.Username, Resource.Amount, Resource.CostTimeUnit, Resource.Status");
 		builder.append(SQLUtils.FROM);
 		builder.append(RESOURCE);
-		builder.append(SQLUtils.JOIN + "Primary_ESF" + SQLUtils.ON + "Primary_ESF.ResourceID = Resource.ID");
-		builder.append(SQLUtils.JOIN + "ESF" + SQLUtils.ON + "Primary_ESF.Number = ESF.Number");
+		if (primaryESFID != null && !"".equals(primaryESFID)) {
+			builder.append(SQLUtils.JOIN + "Primary_ESF" + SQLUtils.ON + "Primary_ESF.ResourceID = Resource.ID");
+			builder.append(SQLUtils.JOIN + "ESF" + SQLUtils.ON + "Primary_ESF.Number = ESF.Number");
+		}
+
 		builder.append(SQLUtils.WHERE);
-		builder.append("(Primary_ESF.Number IS NULL OR Primary_ESF.Number = %s)");
-		builder.append(SQLUtils.OR);
+		if (primaryESFID != null && !"".equals(primaryESFID)) {
+			builder.append("(Primary_ESF.Number IS NULL OR Primary_ESF.Number = %s)");
+			builder.append(SQLUtils.OR);
+		}
+		
+
 		builder.append("(Resource.Name IS NULL OR Resource.Name LIKE '%%" + "%s" + "%%')");
 		builder.append(SQLUtils.OR);
 		builder.append("(Resource.Model IS NULL OR Resource.Model LIKE '%%" + "%s" + "%%')");
 		builder.append(SQLUtils.OR);
-		builder.append("Resource.ID IN (SELECT ID FROM  `Capabilities` WHERE Capabilities.Capabilities like '%%" + "%s" + "%%')");
-		builder.append(SQLUtils.OR);
-		builder.append("EXISTS (SELECT Number FROM  `Additional_ESF` WHERE Number = %s AND Additional_ESF.ResourceId = Resource.ID) ");
-		String format_sql = String.format(builder.toString(), primaryESFID, keyword, keyword, keyword, primaryESFID);
+		builder.append("Resource.ID IN (SELECT ID FROM  `Capabilities` WHERE Capabilities.Capabilities like '%%" + "%s"
+				+ "%%')");
+		if (primaryESFID != null && !"".equals(primaryESFID)) {
+			builder.append(SQLUtils.OR);
+			builder.append(
+					"EXISTS (SELECT Number FROM  `Additional_ESF` WHERE Number = %s AND Additional_ESF.ResourceId = Resource.ID) ");
+		}
+		String format_sql;
+		if(primaryESFID != null && !"".equals(primaryESFID)) {
+			format_sql = String.format(builder.toString(), primaryESFID, keyword, keyword, keyword, primaryESFID);
+		} else {
+		 format_sql = String.format(builder.toString(), keyword, keyword, keyword);
+		}
 		System.out.println(format_sql);
-		//Need to get resource ID, esfnumber, esfdescription, keyword, and incident description from app
-				
+		// Need to get resource ID, esfnumber, esfdescription, keyword, and
+		// incident description from app
+
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(format_sql);
 		for (Map<String, Object> row : rows) {
-			Resource resource = new Resource();
-			resource.setID((Integer) row.get("ID"));
+			SearchedResource resource = new SearchedResource();
+			resource.setResourceID((Integer) row.get("ID"));
 			resource.setName((String) row.get("Name"));
 			resource.setUsername((String) row.get("Username"));
 			resource.setStatus((String) row.get("Status"));
 			BigDecimal amt = (BigDecimal) row.get("Amount");
-			if(amt != null) {
+			if (amt != null) {
 				resource.setAmount(amt.doubleValue());
 			}
 			resource.setCostTimeUnit((String) row.get("CostTimeUnit"));
-
 
 			resources.add(resource);
 		}
