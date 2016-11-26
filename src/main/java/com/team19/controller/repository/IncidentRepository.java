@@ -96,6 +96,33 @@ public class IncidentRepository {
 
 	}
 	
+	public Incident getSearchedIncident(String id) {
+		Incident incident = new Incident();
+		StringBuilder builder = new StringBuilder();
+		builder.append(SQLUtils.SELECT);
+		builder.append("*");
+		builder.append(SQLUtils.FROM);
+		builder.append(INCIDENT);
+		builder.append(SQLUtils.WHERE);
+		builder.append("ID = '%s'");
+		
+		String sql = String.format(builder.toString(), id);
+		
+
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		
+		for (Map<String, Object> row : rows) {
+			System.out.println(row);
+			incident.setID((Integer) row.get("ID"));
+			incident.setDate((Timestamp) row.get("Date"));
+			incident.setLatitude((BigDecimal) row.get("Latitude"));
+			incident.setLongitude((BigDecimal) row.get("Longitude"));
+			incident.setDescription((String) row.get("Description"));
+		}
+		
+		return incident;
+	}
+	
 
 	public void createIncident(Incident incident) {
 		StringBuilder builder = new StringBuilder();

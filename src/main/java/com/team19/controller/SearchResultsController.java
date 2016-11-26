@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -67,8 +68,6 @@ public class SearchResultsController {
 		String sessionId = (String) request.getSession().getAttribute("user");
 		Map<String, String[]> map = request.getParameterMap();
 		
-		System.out.println(sessionId);
-		System.out.println(map);
 		String keyword = allRequestParams.get("keyword");
 		String primaryESFID = allRequestParams.get("PrimaryESF");
 		String incidentparam = allRequestParams.get("incident");
@@ -76,42 +75,45 @@ public class SearchResultsController {
 		if (!incidentparam.isEmpty()) {
 			String[] incidentArray = incidentparam.split("=");
 			incidentID = incidentArray[0];
-			System.out.println(incidentID);
 		}
 
 		String distance = allRequestParams.get("distance");		
-		System.out.println(keyword);
-		System.out.println(primaryESFID);
-		System.out.println(distance);
-	
+		double incident_lat = 0;
+		double incident_lon = 0;
 		List<Resource> resources = resourceRepository.getSelectedResources(incidentID, primaryESFID, keyword, distance);
+		Incident incident = incidentRepository.getSearchedIncident(incidentID);
 
+		incident_lat = incident.getLatitude().doubleValue();
+		incident_lon = incident.getLongitude().doubleValue();
+		
+		
+		
 		double lat_diff;
 		double long_diff;
 		double a;
 		double c;
-		double d;
+		double d = 0;
+		List<Resource> resources_del = new ArrayList<>();
 		//Filter resources if distance is set
 		for (Resource resource : resources) {
 			double resource_lat = resource.getLatitude().doubleValue();
 			double resource_lon = resource.getLongitude().doubleValue();
-			//double incident_lat = resource.getILatitude().doubleValue();
-			//double incident_lon = resource.getILongitude().doubleValue();
-//			System.out.println("R Latitude: " + resource_lat + " R Longitude: " + resource_lon);
-//			System.out.println("I Latitude: " + incident_lat + " I Longitude: " + incident_lon);
-//			lat_diff = Math.toRadians(incident_lat - resource_lat);
-//			long_diff = Math.toRadians(incident_lon - resource_lon);
-//			a = Math.pow(Math.sin(lat_diff/2), 2) + Math.cos(resource_lat) * Math.cos(incident_lat) * Math.pow(Math.sin(long_diff/2), 2);
-//			c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-//			d = 6371 * c;
-//			System.out.println("Distance: " + d);
-			
-			//Calculate distances between each resource and incident
-			
-		} 
-				
 
-		System.out.println(resources);
+			lat_diff = Math.toRadians(incident_lat - resource_lat);
+			long_diff = Math.toRadians(incident_lon - resource_lon);
+			a = Math.pow(Math.sin(lat_diff/2), 2) + Math.cos(resource_lat) * Math.cos(incident_lat) * Math.pow(Math.sin(long_diff/2), 2);
+			c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+			d = 6371 * c;
+			
+			resource.setDistance(d);
+			if (resource.getDistance() > Double.parseDouble(distance)) {
+				resources_del.add(resource);
+			}
+			//Calculate distances between each resource and incident
+		} 
+		for (Resource resource : resources_del) {
+			resources.remove(resource);
+		}
 		model.addAttribute("resources", resources);
 		model.addAttribute("incidentID", incidentID);
 		String userName = HttpSessionService.getInstance().getUsersession(sessionId).getUserName();
