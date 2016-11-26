@@ -67,52 +67,53 @@ public class SearchResultsController {
 
 		String sessionId = (String) request.getSession().getAttribute("user");
 		Map<String, String[]> map = request.getParameterMap();
-		
+
 		String keyword = allRequestParams.get("keyword");
 		String primaryESFID = allRequestParams.get("PrimaryESF");
 		String incidentparam = allRequestParams.get("incident");
-		String incidentID =null;
+		String incidentID = null;
 		if (!incidentparam.isEmpty()) {
 			String[] incidentArray = incidentparam.split("=");
 			incidentID = incidentArray[0];
 		}
 
-		String distance = allRequestParams.get("distance");		
+		String distance = allRequestParams.get("distance");
 		double incident_lat = 0;
 		double incident_lon = 0;
 		List<Resource> resources = resourceRepository.getSelectedResources(incidentID, primaryESFID, keyword, distance);
-		Incident incident = incidentRepository.getSearchedIncident(incidentID);
+		if (incidentID != null) {
+			Incident incident = incidentRepository.getSearchedIncident(incidentID);
 
-		incident_lat = incident.getLatitude().doubleValue();
-		incident_lon = incident.getLongitude().doubleValue();
-		
-		
-		
-		double lat_diff;
-		double long_diff;
-		double a;
-		double c;
-		double d = 0;
-		List<Resource> resources_del = new ArrayList<>();
-		//Filter resources if distance is set
-		for (Resource resource : resources) {
-			double resource_lat = resource.getLatitude().doubleValue();
-			double resource_lon = resource.getLongitude().doubleValue();
+			incident_lat = incident.getLatitude().doubleValue();
+			incident_lon = incident.getLongitude().doubleValue();
 
-			lat_diff = Math.toRadians(incident_lat - resource_lat);
-			long_diff = Math.toRadians(incident_lon - resource_lon);
-			a = Math.pow(Math.sin(lat_diff/2), 2) + Math.cos(resource_lat) * Math.cos(incident_lat) * Math.pow(Math.sin(long_diff/2), 2);
-			c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-			d = 6371 * c;
-			
-			resource.setDistance(d);
-			if (resource.getDistance() > Double.parseDouble(distance)) {
-				resources_del.add(resource);
+			double lat_diff;
+			double long_diff;
+			double a;
+			double c;
+			double d = 0;
+			List<Resource> resources_del = new ArrayList<>();
+			// Filter resources if distance is set
+			for (Resource resource : resources) {
+				double resource_lat = resource.getLatitude().doubleValue();
+				double resource_lon = resource.getLongitude().doubleValue();
+
+				lat_diff = Math.toRadians(incident_lat - resource_lat);
+				long_diff = Math.toRadians(incident_lon - resource_lon);
+				a = Math.pow(Math.sin(lat_diff / 2), 2)
+						+ Math.cos(resource_lat) * Math.cos(incident_lat) * Math.pow(Math.sin(long_diff / 2), 2);
+				c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+				d = 6371 * c;
+
+				resource.setDistance(d);
+				if (resource.getDistance() > Double.parseDouble(distance)) {
+					resources_del.add(resource);
+				}
+				// Calculate distances between each resource and incident
 			}
-			//Calculate distances between each resource and incident
-		} 
-		for (Resource resource : resources_del) {
-			resources.remove(resource);
+			for (Resource resource : resources_del) {
+				resources.remove(resource);
+			}
 		}
 		model.addAttribute("resources", resources);
 		model.addAttribute("incidentID", incidentID);

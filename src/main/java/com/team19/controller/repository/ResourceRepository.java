@@ -124,7 +124,7 @@ public class ResourceRepository {
 
 		if (primaryESFID != null && !"".equals(primaryESFID)) {
 			builder.append("(Primary_ESF.Number IS NULL OR Primary_ESF.Number = %s)");
-			builder.append(SQLUtils.AND);
+			builder.append(SQLUtils.OR);
 		}
 		
 
@@ -138,7 +138,7 @@ public class ResourceRepository {
 		
 		
 		if (primaryESFID != null && !"".equals(primaryESFID)) {
-			builder.append(SQLUtils.AND);
+			builder.append(SQLUtils.OR);
 			builder.append(
 					"EXISTS (SELECT Number FROM  `Additional_ESF` WHERE Number = %s AND Additional_ESF.ResourceId = Resource.ID) ");
 		}
