@@ -33,7 +33,7 @@ public class ResourceRepository {
 	private JdbcTemplate jdbcTemplate;
 
 	public static String RESOURCE = " Resource ";
-
+	public static String INCIDENT = " Incident ";
 	public List<Resource> getAllResources() {
 
 		List<Resource> resources = new ArrayList<>();
@@ -108,18 +108,21 @@ public class ResourceRepository {
 		StringBuilder builder = new StringBuilder();
 		builder.append(SQLUtils.SELECT);
 		builder.append(
-				"Resource.ID, Resource.Name, Resource.Username, Resource.Amount, Resource.CostTimeUnit, Resource.Status");
+				"DISTINCT Resource.ID, Resource.Name, Resource.Username, Resource.Amount, Resource.CostTimeUnit, Resource.Status, ");
+		builder.append(
+				"Resource.Latitude AS rlatitude, Resource.Longitude AS rlongitude");
 		builder.append(SQLUtils.FROM);
 		builder.append(RESOURCE);
-		if (primaryESFID != null && !"".equals(primaryESFID)) {
+
+		if (!primaryESFID.isEmpty()) {
 			builder.append(SQLUtils.JOIN + "Primary_ESF" + SQLUtils.ON + "Primary_ESF.ResourceID = Resource.ID");
 			builder.append(SQLUtils.JOIN + "ESF" + SQLUtils.ON + "Primary_ESF.Number = ESF.Number");
 		}
 
 		builder.append(SQLUtils.WHERE);
-		if (primaryESFID != null && !"".equals(primaryESFID)) {
+		if (!primaryESFID.isEmpty()) {
 			builder.append("(Primary_ESF.Number IS NULL OR Primary_ESF.Number = %s)");
-			builder.append(SQLUtils.OR);
+			builder.append(SQLUtils.AND);
 		}
 		
 
@@ -129,8 +132,10 @@ public class ResourceRepository {
 		builder.append(SQLUtils.OR);
 		builder.append("Resource.ID IN (SELECT ID FROM  `Capabilities` WHERE Capabilities.Capabilities like '%%" + "%s"
 				+ "%%')");
+		
+		
 		if (primaryESFID != null && !"".equals(primaryESFID)) {
-			builder.append(SQLUtils.OR);
+			builder.append(SQLUtils.AND);
 			builder.append(
 					"EXISTS (SELECT Number FROM  `Additional_ESF` WHERE Number = %s AND Additional_ESF.ResourceId = Resource.ID) ");
 		}
@@ -141,10 +146,9 @@ public class ResourceRepository {
 		 format_sql = String.format(builder.toString(), keyword, keyword, keyword);
 		}
 		System.out.println(format_sql);
-		// Need to get resource ID, esfnumber, esfdescription, keyword, and
-		// incident description from app
-
+		
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(format_sql);
+		System.out.println(rows);
 		for (Map<String, Object> row : rows) {
 			SearchedResource resource = new SearchedResource();
 			resource.setResourceID((Integer) row.get("ID"));
@@ -156,7 +160,12 @@ public class ResourceRepository {
 				resource.setAmount(amt.doubleValue());
 			}
 			resource.setCostTimeUnit((String) row.get("CostTimeUnit"));
-
+			resource.setNextAvailableDate((Timestamp) row.get("nextAvailableDate"));
+			resource.setRLongitude((BigDecimal) row.get("rlongitude"));
+			resource.setRLatitude((BigDecimal) row.get("rlatitude"));
+			resource.setILatitude((BigDecimal) row.get("ilatitude"));
+			resource.setILongitude((BigDecimal) row.get("ilongitude"));
+			resource.setModel((String) row.get("model"));
 			resources.add(resource);
 		}
 		return resources;

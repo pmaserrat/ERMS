@@ -45,9 +45,9 @@
 				            <td>${resource.resourceID}</td>
 				            <td>${resource.name}</td>
 				            <td>${resource.username}</td>
-				            <td>${resource.amount} / ${resource.costTimeUnit}</td>
 				            <td>${resource.status}</td>
-				              <td>${resource.amount} / ${resource.costTimeUnit}</td>
+				            <td>${resource.amount} / ${resource.costTimeUnit}</td>
+				            <td>${resource.amount} / ${resource.costTimeUnit}</td>
 				            <td>${resource.model}</td>
 				            <td> <c:if test="${resource.status != 'In Repair' && resource.username != username}">
 								<form class="form-group" action="request" method="POST">
