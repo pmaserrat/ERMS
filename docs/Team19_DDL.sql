@@ -94,6 +94,7 @@ CREATE TABLE Requests(
 	ReturnDate datetime NOT NULL,
 	ResourceOwner varchar(50) NOT NULL,
 	Submitter varchar(50) NOT NULL,
+	Status varchar(50) NOT NULL,
 	PRIMARY KEY (IncidentID, ResourceID),
 FOREIGN KEY (IncidentID) REFERENCES Incident (ID),
 FOREIGN KEY (ResourceID) REFERENCES Resource (ID),
